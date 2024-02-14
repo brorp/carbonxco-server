@@ -1,0 +1,4 @@
+/node_modules
+.env
+carbonxco.pem
+./config/config.json
