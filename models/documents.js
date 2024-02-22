@@ -24,7 +24,9 @@ module.exports = (sequelize, DataTypes) => {
     file_name: DataTypes.STRING,
     file_type: DataTypes.STRING,
     document_type: DataTypes.STRING
-  }, {
+  }, { hooks: {
+    
+  },
     sequelize,
     modelName: 'Documents',
   });

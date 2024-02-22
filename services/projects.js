@@ -1,4 +1,4 @@
-const { Project, sequelize } = require("../models/index");
+const { Projects, Documents, sequelize } = require("../models/index");
 const { Op } = require("sequelize");
 
 class ProjectService {
@@ -22,7 +22,7 @@ class ProjectService {
                 where.status = params.status
             }
 
-            let projects = await Project.findAndCountAll({
+            let projects = await Projects.findAndCountAll({
                 where,
                 order: [
                     ['id', 'DESC'],
@@ -42,9 +42,23 @@ class ProjectService {
                 throw {code: 404, message: 'need params or id'}
             }
 
-            let project = await Project.findOne({where: {id}})
+            let project = await Projects.findOne({
+                where: {id},
+            })
 
-            return project
+            let documents = await Documents.findAll({
+                where: {
+                    reference_id: id,
+                    reference_type: "projects"
+                }
+            })
+
+            let response = {
+                project,
+                documents,
+            }
+
+            return response
         } catch (error) {
             next(error)
         }
@@ -56,10 +70,10 @@ class ProjectService {
                 throw {code: 404, message: 'need params'}
             }
             
-            await Project.create(params)
+            await Projects.create(params)
 
             return true
-        } catch {
+        } catch (error){
             next(error)
         }
     }
@@ -70,7 +84,7 @@ class ProjectService {
                 throw {code: 404, message: 'need params or id'}
             }
 
-            await Project.update(params, {where: {id}})
+            await Projects.update(params, {where: {id}})
 
             return true
         } catch (error) {
@@ -84,7 +98,7 @@ class ProjectService {
                 throw {code: 404, message: 'need params'}
             }
 
-            await Project.destroy({where: params.id})
+            await Projects.destroy({where: params.id})
             return true
         } catch {
             next(error)

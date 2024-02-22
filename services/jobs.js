@@ -1,14 +1,14 @@
-const { Teams, sequelize } = require("../models/index");
+const { Jobs, sequelize } = require("../models/index");
 const { Op } = require("sequelize");
 
-class TeamService {
+class DocumentService {
     static all = async (params, next) => {
         try {
             let where = {}
             if (params.keyword) {
                 where = {
                     [Op.or]: {
-                        position: {
+                        title: {
                             [Op.iLike]: `%${params.keyword}%`
                         },
                         name: {
@@ -22,15 +22,15 @@ class TeamService {
                 where.status = params.status
             }
 
-            let teams = await Teams.findAndCountAll({
+            let jobs = await Jobs.findAndCountAll({
                 where,
                 order: [
                     ['id', 'DESC'],
                 ],
             });
 
-            return teams;
-            
+            return jobs;
+
         } catch (error) {
             next(error)
         }
@@ -42,9 +42,9 @@ class TeamService {
                 throw {code: 404, message: 'need params or id'}
             }
 
-            let team = await Teams.findOne({where: {id}})
+            let blog = await Jobs.findOne({where: {id}})
 
-            return team
+            return blog
         } catch (error) {
             next(error)
         }
@@ -56,7 +56,7 @@ class TeamService {
                 throw {code: 404, message: 'need params'}
             }
             
-            await Teams.create(params)
+            await Jobs.create(params)
 
             return true
         } catch (error){
@@ -70,7 +70,7 @@ class TeamService {
                 throw {code: 404, message: 'need params or id'}
             }
 
-            await Teams.update(params, {where: {id}})
+            await Jobs.update(params, {where: {id}})
 
             return true
         } catch (error) {
@@ -84,7 +84,7 @@ class TeamService {
                 throw {code: 404, message: 'need params'}
             }
 
-            await Teams.destroy({where: params.id})
+            await Jobs.destroy({where: params.id})
             return true
         } catch {
             next(error)
@@ -92,4 +92,4 @@ class TeamService {
     }
 }
 
-module.exports = TeamService
+module.exports = DocumentService

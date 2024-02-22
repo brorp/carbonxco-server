@@ -3,20 +3,24 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.createTable('users', {
+    await queryInterface.createTable('Users', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         allowNull: false,
         primaryKey: true
       },
-      created_at: {
+      createdAt: {
         allowNull: false,
-        type: Sequelize.BIGINT,
-        defaultValue: Sequelize.literal('EXTRACT(EPOCH FROM NOW()) * 1000')
+        type: Sequelize.DATE
       },
-      deleted_at: {
-        type: Sequelize.BIGINT
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      deletedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
       },
       email: {
         allowNull: false,
@@ -41,7 +45,7 @@ module.exports = {
       }
     });
 
-    await queryInterface.createTable('categories', {
+    await queryInterface.createTable('Categories', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -51,25 +55,31 @@ module.exports = {
       name: {
         type: Sequelize.STRING,
         allowNull: false,
-      }
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
     });
 
-    await queryInterface.createTable('blogs', {
+    await queryInterface.createTable('Blogs', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         allowNull: false,
         primaryKey: true
       },
-      created_at: {
+      createdAt: {
         allowNull: false,
-        type: Sequelize.BIGINT,
-        defaultValue: Sequelize.literal('EXTRACT(EPOCH FROM NOW()) * 1000')
+        type: Sequelize.DATE
       },
-      updated_at: {
+      updatedAt: {
         allowNull: false,
-        type: Sequelize.BIGINT,
-        defaultValue: Sequelize.literal('EXTRACT(EPOCH FROM NOW()) * 1000')
+        type: Sequelize.DATE
       },
       deleted_at: {
         type: Sequelize.BIGINT
@@ -84,7 +94,7 @@ module.exports = {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: "categories",
+          model: "Categories",
           key: "id",
         },
         onUpdate: "cascade",
@@ -98,22 +108,20 @@ module.exports = {
       }
     });
 
-    await queryInterface.createTable('teams', {
+    await queryInterface.createTable('Teams', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         allowNull: false,
         primaryKey: true
       },
-      created_at: {
+      createdAt: {
         allowNull: false,
-        type: Sequelize.BIGINT,
-        defaultValue: Sequelize.literal('EXTRACT(EPOCH FROM NOW()) * 1000')
+        type: Sequelize.DATE
       },
-      updated_at: {
+      updatedAt: {
         allowNull: false,
-        type: Sequelize.BIGINT,
-        defaultValue: Sequelize.literal('EXTRACT(EPOCH FROM NOW()) * 1000')
+        type: Sequelize.DATE
       },
       name: {
         allowNull: false,
@@ -130,17 +138,20 @@ module.exports = {
       },
     });
 
-    await queryInterface.createTable('jobs', {
+    await queryInterface.createTable('Jobs', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         allowNull: false,
         primaryKey: true
       },
-      created_at: {
+      createdAt: {
         allowNull: false,
-        type: Sequelize.BIGINT,
-        defaultValue: Sequelize.literal('EXTRACT(EPOCH FROM NOW()) * 1000')
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
       },
       title: {
         allowNull: false,
@@ -160,23 +171,26 @@ module.exports = {
       },
     });
 
-    await queryInterface.createTable('careers', {
+    await queryInterface.createTable('Careers', {
       id: {
         type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
+        defaultValue: Sequelize.UUIDV4(),
         allowNull: false,
         primaryKey: true
       },
-      created_at: {
+      createdAt: {
         allowNull: false,
-        type: Sequelize.BIGINT,
-        defaultValue: Sequelize.literal('EXTRACT(EPOCH FROM NOW()) * 1000')
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
       },
       job_id: {
         allowNull: false,
         type: Sequelize.UUID,
         references: {
-          model: "jobs",
+          model: "Jobs",
           key: "id",
         },
         onUpdate: "cascade",
@@ -186,7 +200,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.UUID,
         references: {
-          model: "users",
+          model: "Users",
           key: "id",
         },
         onUpdate: "cascade",
@@ -194,10 +208,10 @@ module.exports = {
       },
     });
 
-    await queryInterface.createTable('faqs', {
+    await queryInterface.createTable('Faqs', {
       id: {
         type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
+        defaultValue: Sequelize.UUIDV4(),
         allowNull: false,
         primaryKey: true
       },
@@ -206,20 +220,31 @@ module.exports = {
       },
       answer: {
         type: Sequelize.TEXT
-      }
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
     });
 
-    await queryInterface.createTable('documents', {
+    await queryInterface.createTable('Documents', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         allowNull: false,
         primaryKey: true
       },
-      created_at: {
+      createdAt: {
         allowNull: false,
-        type: Sequelize.BIGINT,
-        defaultValue: Sequelize.literal('EXTRACT(EPOCH FROM NOW()) * 1000')
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
       },
       reference_id: {
         type: Sequelize.UUID,
@@ -247,22 +272,20 @@ module.exports = {
       }
     });
 
-    await queryInterface.createTable('projects', {
+    await queryInterface.createTable('Projects', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         allowNull: false,
         primaryKey: true
       },
-      created_at: {
+      createdAt: {
         allowNull: false,
-        type: Sequelize.BIGINT,
-        defaultValue: Sequelize.literal('EXTRACT(EPOCH FROM NOW()) * 1000')
+        type: Sequelize.DATE
       },
-      updated_at: {
+      updatedAt: {
         allowNull: false,
-        type: Sequelize.BIGINT,
-        defaultValue: Sequelize.literal('EXTRACT(EPOCH FROM NOW()) * 1000')
+        type: Sequelize.DATE
       },
       title: {
         type: Sequelize.STRING,
@@ -302,14 +325,14 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable('faqs');
-    await queryInterface.dropTable('careers');
-    await queryInterface.dropTable('jobs');
-    await queryInterface.dropTable('blogs');
-    await queryInterface.dropTable('teams');
-    await queryInterface.dropTable('projects');
-    await queryInterface.dropTable('documents');
-    await queryInterface.dropTable('categories');
-    await queryInterface.dropTable('users');
+    await queryInterface.dropTable('Faqs');
+    await queryInterface.dropTable('Careers');
+    await queryInterface.dropTable('Jobs');
+    await queryInterface.dropTable('Blogs');
+    await queryInterface.dropTable('Teams');
+    await queryInterface.dropTable('Projects');
+    await queryInterface.dropTable('Documents');
+    await queryInterface.dropTable('Categories');
+    await queryInterface.dropTable('Users');
   }
 };

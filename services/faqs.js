@@ -1,4 +1,4 @@
-const { Faq, sequelize } = require("../models/index");
+const { Faqs, sequelize } = require("../models/index")
 const { Op } = require("sequelize");
 
 class FaqService {
@@ -22,7 +22,7 @@ class FaqService {
                 where.status = params.status
             }
 
-            let faqs = await Faq.findAndCountAll({
+            let faqs = await Faqs.findAndCountAll({
                 where,
                 order: [
                     ['id', 'DESC'],
@@ -41,7 +41,7 @@ class FaqService {
                 throw {code: 404, message: 'need params or id'}
             }
 
-            let faq = await Faq.findOne({where: {id}})
+            let faq = await Faqs.findOne({where: {id}})
 
             return faq
         } catch (error) {
@@ -54,11 +54,10 @@ class FaqService {
             if(!params) {
                 throw {code: 404, message: 'need params'}
             }
-            
-            await Faq.create(params)
+            await Faqs.create(params)
 
             return true
-        } catch {
+        } catch (error) {
             next(error)
         }
     }
@@ -69,7 +68,7 @@ class FaqService {
                 throw {code: 404, message: 'need params or id'}
             }
 
-            await Faq.update(params, {where: {id}})
+            await Faqs.update(params, {where: {id}})
 
             return true
         } catch (error) {
@@ -83,7 +82,7 @@ class FaqService {
                 throw {code: 404, message: 'need params'}
             }
 
-            await Faq.destroy({where: params.id})
+            await Faqs.destroy({where: params.id})
             return true
         } catch {
             next(error)

@@ -2,7 +2,7 @@
 const {
   Model
 } = require('sequelize');
-const {getSalt} = require('../helpers/bcrypt')
+const {getSalt} = require('../helpers/hash')
 const { v4: uuidv4 } = require('uuid');
 module.exports = (sequelize, DataTypes) => {
   class Users extends Model {
