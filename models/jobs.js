@@ -22,12 +22,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Jobs.init({
-    created_at: DataTypes.BIGINT,
     title: DataTypes.STRING,
     type: DataTypes.STRING,
     location: DataTypes.STRING,
-    requirement: DataTypes.TEXT,
-    qualification: DataTypes.TEXT
+    requirement: DataTypes.ARRAY(DataTypes.STRING),
+    qualification: DataTypes.ARRAY(DataTypes.STRING),
   }, {
     sequelize,
     modelName: 'Jobs',

@@ -1,10 +1,11 @@
 const express = require("express");
 const route = express();
-const FaqController = require('../controllers/faqController');
+const cms_route = require("./cms")
+const web_route = require("./web")
 const VersionController = require('../controllers/versionController');
 
 route.get("/v1", VersionController.status);
-route.post("/v1/faq", FaqController.post);
-
+route.use("/v1/w", web_route)
+route.use("/v1/c", cms_route)
 
 module.exports = route; 

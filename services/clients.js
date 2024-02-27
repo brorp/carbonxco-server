@@ -1,20 +1,15 @@
-const { Faqs, sequelize } = require("../models/index")
+const { Clients, Users, sequelize } = require("../models/index")
 const { Op } = require("sequelize");
 
-class FaqService {
+class ClientService {
     static all = async (params, next) => {
         try {
             let where = {}
             let order = ['id','DESC']
             if (params.keyword) {
                 where = {
-                    [Op.or]: {
-                        question: {
-                            [Op.iLike]: `%${params.keyword}%`
-                        },
-                        answer: {
-                            [Op.iLike]: `%${params.keyword}%`
-                        }
+                    name: {
+                        [Op.iLike]: `%${params.keyword}%`
                     }
                 }
             }
@@ -24,8 +19,9 @@ class FaqService {
                 order[1] = params.order
             }
 
-            let faqs = await Faqs.findAndCountAll({
+            let faqs = await Clients.findAndCountAll({
                 where,
+                include: {model: Users, attributes: ['name', 'email', 'phone']},
                 order: [
                     order,
                 ],
@@ -43,8 +39,11 @@ class FaqService {
                 throw {code: 404, message: 'need params or id'}
             }
 
-            let faq = await Faqs.findOne({where: {id}})
-            if (!faq) {
+            let client = await Clients.findOne({
+                where: {id},
+                include: {model: Users, attributes: ['name', 'email', 'phone']}
+            })
+            if (!client) {
                 throw {code: 404, message: 'data not found'}
             }
             return faq
@@ -54,25 +53,30 @@ class FaqService {
     }
 
     static create = async (params, next) => {
+        const transaction = await sequelize.transaction();
         try {
             if(!params) {
                 throw {code: 404, message: 'need params'}
             }
-            await Faqs.create(params)
 
-            return true
-        } catch (error) {
-            next(error)
-        }
-    }
+            let user = await Users.create({
+                email: params.email,
+                name: params.name,
+                phone: params.phone,
+                role: 'client'
+            }, {transaction})
 
-    static update = async (id, params, next) => {
-        try {
-            if(!params || !id) {
-                throw {code: 404, message: 'need params or id'}
+            if (!user) {
+                throw {code: 404, message: 'error creating user'}
             }
 
-            await Faqs.update(params, {where: {id}})
+            await Clients.create({
+                user_id: user.id,
+                subject: params.subject,
+                body: params.body
+            }, {transaction})
+
+            await transaction.commit();
 
             return true
         } catch (error) {
@@ -86,7 +90,7 @@ class FaqService {
                 throw {code: 404, message: 'need params id'}
             }
 
-            await Faqs.destroy({where: {id}})
+            await Clients.destroy({where: {id}})
             return true
         } catch (error) {
             next(error)
@@ -94,4 +98,4 @@ class FaqService {
     }
 }
 
-module.exports = FaqService
+module.exports = ClientService

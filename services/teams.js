@@ -86,7 +86,7 @@ class TeamService {
 
             await Teams.destroy({where: params.id})
             return true
-        } catch {
+        } catch (error) {
             next(error)
         }
     }

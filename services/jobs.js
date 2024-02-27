@@ -1,31 +1,36 @@
 const { Jobs, sequelize } = require("../models/index");
 const { Op } = require("sequelize");
 
-class DocumentService {
+class JobService {
     static all = async (params, next) => {
         try {
             let where = {}
+            let order = ['id', 'DESC']
             if (params.keyword) {
                 where = {
                     [Op.or]: {
                         title: {
                             [Op.iLike]: `%${params.keyword}%`
                         },
-                        name: {
+                        type: {
                             [Op.iLike]: `%${params.keyword}%`
-                        }
+                        },
+                        location: {
+                            [Op.iLike]: `%${params.keyword}%`
+                        },
                     }
                 }
             }
 
-            if (params.status) {
-                where.status = params.status
+            if (params.sort && params.order) {
+                order[0] = params.sort
+                order[1] = params.order
             }
 
             let jobs = await Jobs.findAndCountAll({
                 where,
                 order: [
-                    ['id', 'DESC'],
+                    order,
                 ],
             });
 
@@ -42,9 +47,11 @@ class DocumentService {
                 throw {code: 404, message: 'need params or id'}
             }
 
-            let blog = await Jobs.findOne({where: {id}})
+            let job = await Jobs.findOne({
+                where: {id},
+            })
 
-            return blog
+            return job
         } catch (error) {
             next(error)
         }
@@ -86,10 +93,10 @@ class DocumentService {
 
             await Jobs.destroy({where: params.id})
             return true
-        } catch {
+        } catch (error) {
             next(error)
         }
     }
 }
 
-module.exports = DocumentService
+module.exports = JobService

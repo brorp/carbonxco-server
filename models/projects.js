@@ -14,7 +14,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Projects.init({
-    created_at: DataTypes.BIGINT,
     title: DataTypes.STRING,
     description: DataTypes.TEXT,
     start_date: DataTypes.BIGINT,
@@ -25,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     main_goal: DataTypes.TEXT,
     key_factor: DataTypes.TEXT,
     other: DataTypes.TEXT,
+    sdg: DataTypes.ARRAY(DataTypes.STRING),
     status: DataTypes.ENUM("careers", "projects", "pages", "blogs", "teams")
   }, {
     sequelize,

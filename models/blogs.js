@@ -10,20 +10,13 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
-      this.belongsTo(models.Categories, {
-        foreignKey: "category_id",
-        constraints: false,
-      });
     }
   }
   Blogs.init({
-    created_at: DataTypes.BIGINT,
-    updated_at: DataTypes.BIGINT,
-    deleted_at: DataTypes.BIGINT,
     author: DataTypes.STRING,
+    title: DataTypes.STRING,
     content: DataTypes.TEXT,
-    category_id: DataTypes.UUID,
+    category: DataTypes.ENUM('news','insight','all_about_carbon'),
     slug: DataTypes.TEXT,
     meta_tag: DataTypes.TEXT
   }, {

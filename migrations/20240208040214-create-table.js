@@ -5,10 +5,10 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.createTable('Users', {
       id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
         allowNull: false,
-        primaryKey: true
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -45,33 +45,12 @@ module.exports = {
       }
     });
 
-    await queryInterface.createTable('Categories', {
-      id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
-        allowNull: false,
-        primaryKey: true
-      },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-    });
-
     await queryInterface.createTable('Blogs', {
       id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
         allowNull: false,
-        primaryKey: true
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -80,40 +59,27 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      },
-      deleted_at: {
-        type: Sequelize.BIGINT
       },
       author: {
         type: Sequelize.STRING,
       },
+      title: {
+        type: Sequelize.STRING
+      },
       content: {
         type: Sequelize.TEXT,
       },
-      category_id: {
-        type: Sequelize.UUID,
-        allowNull: false,
-        references: {
-          model: "Categories",
-          key: "id",
-        },
-        onUpdate: "cascade",
-        onDelete: "cascade",
+      category: {
+        type: Sequelize.INTEGER,
       },
-      slug: {
-        type: Sequelize.TEXT,
-      },
-      meta_tag: {
-        type: Sequelize.TEXT
-      }
     });
 
     await queryInterface.createTable('Teams', {
       id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
         allowNull: false,
-        primaryKey: true
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -140,10 +106,10 @@ module.exports = {
 
     await queryInterface.createTable('Jobs', {
       id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
         allowNull: false,
-        primaryKey: true
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -164,19 +130,19 @@ module.exports = {
         type: Sequelize.STRING,
       },
       requirement: {
-        type: Sequelize.TEXT,
+        type: Sequelize.ARRAY(Sequelize.STRING),
       },
       qualification: {
-        type: Sequelize.TEXT,
+        type: Sequelize.ARRAY(Sequelize.STRING),
       },
     });
 
     await queryInterface.createTable('Careers', {
       id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4(),
         allowNull: false,
-        primaryKey: true
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -188,7 +154,7 @@ module.exports = {
       },
       job_id: {
         allowNull: false,
-        type: Sequelize.UUID,
+        type: Sequelize.INTEGER,
         references: {
           model: "Jobs",
           key: "id",
@@ -198,7 +164,7 @@ module.exports = {
       },
       user_id: {
         allowNull: false,
-        type: Sequelize.UUID,
+        type: Sequelize.INTEGER,
         references: {
           model: "Users",
           key: "id",
@@ -210,10 +176,10 @@ module.exports = {
 
     await queryInterface.createTable('Faqs', {
       id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4(),
         allowNull: false,
-        primaryKey: true
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER
       },
       question: {
         type: Sequelize.STRING,
@@ -233,10 +199,10 @@ module.exports = {
 
     await queryInterface.createTable('Documents', {
       id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
         allowNull: false,
-        primaryKey: true
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -274,10 +240,10 @@ module.exports = {
 
     await queryInterface.createTable('Projects', {
       id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
         allowNull: false,
-        primaryKey: true
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -317,22 +283,57 @@ module.exports = {
       other: {
         type: Sequelize.TEXT,
       },
+      scopes: {
+        type: Sequelize.ARRAY(Sequelize.STRING),
+      },
       status: {
         type: Sequelize.ENUM("Origination", "Due dilligence", "Development", "Implementation", "Issuance"),
       }
-      
     });
+
+    await queryInterface.createTable('Clients', {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      user_id: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Users",
+          key: "id",
+        },
+        onUpdate: "cascade",
+        onDelete: "cascade",
+      },
+      subject: {
+        type: Sequelize.STRING
+      },
+      body: {
+        type: Sequelize.TEXT
+      },
+    })
   },
 
   async down (queryInterface, Sequelize) {
     await queryInterface.dropTable('Faqs');
+    await queryInterface.dropTable('Clients')
     await queryInterface.dropTable('Careers');
     await queryInterface.dropTable('Jobs');
     await queryInterface.dropTable('Blogs');
     await queryInterface.dropTable('Teams');
     await queryInterface.dropTable('Projects');
     await queryInterface.dropTable('Documents');
-    await queryInterface.dropTable('Categories');
     await queryInterface.dropTable('Users');
   }
 };

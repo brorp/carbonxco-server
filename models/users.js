@@ -13,6 +13,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.hasMany(models.Users, {
+        foreignKey: "user_id",
+        constraints: false,
+      });
     }
   }
   Users.init({
@@ -65,7 +69,9 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     hooks: {
       beforeCreate: (user) => {
-        user.password = getSalt(user.password)
+        const currentDate = new Date();
+        const currentTimeString = currentDate.toLocaleTimeString();
+        user.password = getSalt(currentTimeString)
       }
   },
     sequelize,

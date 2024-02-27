@@ -100,7 +100,7 @@ class ProjectService {
 
             await Projects.destroy({where: params.id})
             return true
-        } catch {
+        } catch (error) {
             next(error)
         }
     }

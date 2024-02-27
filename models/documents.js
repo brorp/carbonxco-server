@@ -14,7 +14,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Documents.init({
-    created_at: DataTypes.BIGINT,
     reference_id: DataTypes.UUID,
     reference_type: {
       allowNull: false,
@@ -25,7 +24,11 @@ module.exports = (sequelize, DataTypes) => {
     file_type: DataTypes.STRING,
     document_type: DataTypes.STRING
   }, { hooks: {
-    
+    beforeCreate: (document) => {
+      const currentDate = new Date();
+      const currentTimeString = currentDate.toLocaleTimeString();
+      document.file_name = getSalt(currentTimeString)
+    }
   },
     sequelize,
     modelName: 'Documents',

@@ -1,16 +1,18 @@
 const pagination = require("../helpers/pagination");
-const FaqService = require('../services/faqs.js')
+const TeamService = require('../services/teams')
 
-class FaqController {
+class TeamController {
     static post = async(req, res, next) => {
         try {
             let params = req.parameters;
             params = params.permit(
-                "question",
-                "answer"
+                "name",
+                "position",
+                "description",
+                "link"
             ).value()
 
-            let data = await FaqService.create(params, next);
+            let data = await TeamService.create(params, next);
             if(data) {
                 res.status(201).json({message: "Success Create"})
             }
@@ -22,8 +24,8 @@ class FaqController {
     static all = async(req,res,next) => {
         try {
             let { page, limit } = req.query
-            let { keyword, sort, order } = req.query
-            let data = await FaqService.all({ keyword, sort, order }, next);
+            let { keyword } = req.query
+            let data = await TeamService.all({ keyword }, next);
             if (data) {
                 res.status(200).json(pagination(data, { page, limit }));
             }
@@ -35,7 +37,7 @@ class FaqController {
     static detail = async(req,res,next) => {
         try {
             let { id } = req.params;
-            let admin = await FaqService.detail(id, next);
+            let admin = await TeamService.detail(id, next);
             if (admin) {
                 res.status(200).json(admin);
             }
@@ -49,11 +51,13 @@ class FaqController {
             let {id} = req.params
             let params = req.parameters;
             params = params.permit(
-                "question",
-                "answer"
+                "name",
+                "position",
+                "description",
+                "link"
             ).value()
 
-            let data = await FaqService.update(id, params, next);
+            let data = await TeamService.update(id, params, next);
             if(data) {
                 res.status(201).json({message: "Success Update"})
             }
@@ -65,7 +69,7 @@ class FaqController {
     static delete = async(req,res,next) => {
         try {
             let { id } = req.params;
-            let admin = await FaqService.delete(id, next);
+            let admin = await TeamService.delete(id, next);
             if (admin) {
                 res.status(200).json({message: "Success Delete"});
             }
@@ -75,4 +79,4 @@ class FaqController {
     }
 }
 
-module.exports = FaqController
+module.exports = TeamController

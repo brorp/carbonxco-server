@@ -1,16 +1,18 @@
 const pagination = require("../helpers/pagination");
-const FaqService = require('../services/faqs.js')
+const BlogService = require('../services/blogs')
 
-class FaqController {
+class BlogController {
     static post = async(req, res, next) => {
         try {
             let params = req.parameters;
             params = params.permit(
-                "question",
-                "answer"
+                "author",
+                "title",
+                "content",
+                "category_id"
             ).value()
 
-            let data = await FaqService.create(params, next);
+            let data = await BlogService.create(params, next);
             if(data) {
                 res.status(201).json({message: "Success Create"})
             }
@@ -23,7 +25,7 @@ class FaqController {
         try {
             let { page, limit } = req.query
             let { keyword, sort, order } = req.query
-            let data = await FaqService.all({ keyword, sort, order }, next);
+            let data = await BlogService.all({ keyword, sort, order }, next);
             if (data) {
                 res.status(200).json(pagination(data, { page, limit }));
             }
@@ -35,7 +37,7 @@ class FaqController {
     static detail = async(req,res,next) => {
         try {
             let { id } = req.params;
-            let admin = await FaqService.detail(id, next);
+            let admin = await BlogService.detail(id, next);
             if (admin) {
                 res.status(200).json(admin);
             }
@@ -49,11 +51,13 @@ class FaqController {
             let {id} = req.params
             let params = req.parameters;
             params = params.permit(
-                "question",
-                "answer"
+                "author",
+                "title",
+                "content",
+                "category_id"
             ).value()
 
-            let data = await FaqService.update(id, params, next);
+            let data = await BlogService.update(id, params, next);
             if(data) {
                 res.status(201).json({message: "Success Update"})
             }
@@ -65,8 +69,8 @@ class FaqController {
     static delete = async(req,res,next) => {
         try {
             let { id } = req.params;
-            let admin = await FaqService.delete(id, next);
-            if (admin) {
+            let data = await BlogService.delete(id, next);
+            if (data) {
                 res.status(200).json({message: "Success Delete"});
             }
         } catch (error) {
@@ -75,4 +79,4 @@ class FaqController {
     }
 }
 
-module.exports = FaqController
+module.exports = BlogController

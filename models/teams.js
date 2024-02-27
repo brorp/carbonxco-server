@@ -20,7 +20,6 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       primaryKey: true,
     },
-    created_at: DataTypes.BIGINT,
     name: DataTypes.STRING,
     position: DataTypes.STRING,
     description: DataTypes.TEXT,

@@ -2,8 +2,6 @@
 const {
   Model
 } = require('sequelize');
-const {v4: uuidv4} = require('uuid');
-const {Sequelize} = require("sequelize")
 module.exports = (sequelize, DataTypes) => {
   class Faqs extends Model {
     /**
@@ -16,22 +14,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Faqs.init({
-    id: {
-      type: Sequelize.UUID,
-      defaultValue: DataTypes.UUIDV4, // Sequelize will generate a UUID for you, but you can use your own if you want
-      allowNull: false,
-      unique: true,
-      primaryKey: true
-    },
     question: DataTypes.STRING,
     answer: DataTypes.TEXT
   }, {
-    hooks: {
-      beforeCreate: (instance) => {
-        // Generate a random UUID using the uuid package
-        instance.id = uuidv4();
-      },
-    },
     sequelize,
     modelName: 'Faqs',
   });

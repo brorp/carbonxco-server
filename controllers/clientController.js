@@ -1,16 +1,19 @@
 const pagination = require("../helpers/pagination");
-const FaqService = require('../services/faqs.js')
+const ClientService = require('../services/clients')
 
-class FaqController {
+class ClientController {
     static post = async(req, res, next) => {
         try {
             let params = req.parameters;
             params = params.permit(
-                "question",
-                "answer"
+                "name",
+                "phone",
+                "email",
+                "subject",
+                "body"
             ).value()
 
-            let data = await FaqService.create(params, next);
+            let data = await ClientService.create(params, next);
             if(data) {
                 res.status(201).json({message: "Success Create"})
             }
@@ -23,7 +26,7 @@ class FaqController {
         try {
             let { page, limit } = req.query
             let { keyword, sort, order } = req.query
-            let data = await FaqService.all({ keyword, sort, order }, next);
+            let data = await ClientService.all({ keyword, sort, order }, next);
             if (data) {
                 res.status(200).json(pagination(data, { page, limit }));
             }
@@ -35,7 +38,7 @@ class FaqController {
     static detail = async(req,res,next) => {
         try {
             let { id } = req.params;
-            let admin = await FaqService.detail(id, next);
+            let admin = await ClientService.detail(id, next);
             if (admin) {
                 res.status(200).json(admin);
             }
@@ -44,30 +47,13 @@ class FaqController {
         }
     }
 
-    static update = async(req, res, next) => {
+    static delete = async(req, res, next) => {
         try {
             let {id} = req.params
-            let params = req.parameters;
-            params = params.permit(
-                "question",
-                "answer"
-            ).value()
 
-            let data = await FaqService.update(id, params, next);
+            let data = await ClientService.delete(id, next);
             if(data) {
-                res.status(201).json({message: "Success Update"})
-            }
-        } catch (error) {
-            next(error)
-        }
-    }
-
-    static delete = async(req,res,next) => {
-        try {
-            let { id } = req.params;
-            let admin = await FaqService.delete(id, next);
-            if (admin) {
-                res.status(200).json({message: "Success Delete"});
+                res.status(201).json({message: "Success Delete"})
             }
         } catch (error) {
             next(error)
@@ -75,4 +61,4 @@ class FaqController {
     }
 }
 
-module.exports = FaqController
+module.exports = ClientController

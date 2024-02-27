@@ -1,31 +1,33 @@
-const { Blogs, sequelize } = require("../models/index");
+const { Blogs, Categories, sequelize } = require("../models/index");
 const { Op } = require("sequelize");
 
 class BlogService {
     static all = async (params, next) => {
         try {
             let where = {}
+            let order = ['id', 'DESC']
             if (params.keyword) {
                 where = {
                     [Op.or]: {
-                        title: {
+                        author: {
                             [Op.iLike]: `%${params.keyword}%`
                         },
-                        name: {
+                        content: {
                             [Op.iLike]: `%${params.keyword}%`
                         }
                     }
                 }
             }
 
-            if (params.status) {
-                where.status = params.status
+            if (params.sort && params.order) {
+                order[0] = params.sort
+                order[1] = params.order
             }
 
             let blogs = await Blogs.findAndCountAll({
                 where,
                 order: [
-                    ['id', 'DESC'],
+                    order,
                 ],
             });
 
@@ -42,7 +44,9 @@ class BlogService {
                 throw {code: 404, message: 'need params or id'}
             }
 
-            let blog = await Blogs.findOne({where: {id}})
+            let blog = await Blogs.findOne({
+                where: {id}, 
+            })
 
             return blog
         } catch (error) {
@@ -84,9 +88,9 @@ class BlogService {
                 throw {code: 404, message: 'need params'}
             }
 
-            await Blogs.destroy({where: params.id})
+            await Blogs.destroy({where: {id}})
             return true
-        } catch {
+        } catch (error) {
             next(error)
         }
     }
