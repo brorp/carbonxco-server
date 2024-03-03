@@ -64,7 +64,7 @@ module.exports = {
         type: Sequelize.TEXT,
       },
       category: {
-        type: Sequelize.INTEGER,
+        type: Sequelize..ENUM('news','insight','all_about_carbon'),
       },
       meta_title: {
         type: Sequelize.STRING
@@ -151,7 +151,7 @@ module.exports = {
       },
       job_id: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         references: {
           model: "Jobs",
           key: "id",
@@ -161,7 +161,7 @@ module.exports = {
       },
       user_id: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         references: {
           model: "Users",
           key: "id",
@@ -301,7 +301,7 @@ module.exports = {
       },
       user_id: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         references: {
           model: "Users",
           key: "id",

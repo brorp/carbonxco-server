@@ -25,7 +25,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npx nodemon bin/www",
-    "ssh-dev": "ssh -i 'carbonxco.pem' ubuntu@ec2-13-250-56-213.ap-southeast-1.compute.amazonaws.com"
+    "ssh-dev": "ssh -i 'carbonxco.pem' ubuntu@ec2-13-229-127-73.ap-southeast-1.compute.amazonaws.com"
   },
   "repository": {
     "type": "git",
