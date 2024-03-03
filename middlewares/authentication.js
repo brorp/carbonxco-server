@@ -10,7 +10,8 @@ let authentication = async (req, res, next) => {
 
         const payload = verifyToken(token)
         const response = await Users.findOne({
-            where: {email: payload.email}
+            where: {email: payload.email},
+            attributes: {exclude: "user_id"}
         })
 
         if(!response || req.headers.authorization.substr(0,6) !== "Bearer"){
@@ -25,7 +26,6 @@ let authentication = async (req, res, next) => {
         next()
     } 
     catch (err) {
-        console.log(err)
         next(err)
     }
 }

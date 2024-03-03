@@ -3,9 +3,11 @@
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "crypto-js": "^4.2.0",
     "esm": "^3.2.25",
     "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
     "module-alias": "^2.2.2",
     "moment": "^2.29.4",
     "morgan": "^1.10.0",
@@ -38,7 +40,7 @@
   "description": "",
   "devDependencies": {
     "@types/module-alias": "^2.0.1",
-    "dotenv": "^16.0.3",
+    "dotenv": "^16.4.5",
     "nodemon": "^2.0.20",
     "sequelize-cli": "^6.5.2"
   },

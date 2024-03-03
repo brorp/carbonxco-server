@@ -1,11 +1,12 @@
 'use strict';
-const { getSalt } = require("../helpers/bcrypt");
+/** @type {import('sequelize-cli').Migration} */
+const {hash_password} = require('../helpers/hash')
 module.exports = {
   async up (queryInterface, Sequelize) {
     let data = [{
       name: 'Admin Carbonxco',
       email: 'superadmin@carbonxco.com',
-      password: getSalt('Carbon123!'),
+      password: hash_password('Carbon123!'),
       role: "admin",
       createdAt: new Date(),
       updatedAt: new Date()

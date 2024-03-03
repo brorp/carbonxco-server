@@ -11,17 +11,23 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.hasMany(models.Careers, {
+      this.belongsTo(models.Careers, {
         foreignKey: "job_id",
         constraints: false,
       });
-      this.hasMany(models.Users, {
+      this.belongsTo(models.Users, {
         foreignKey: "user_id",
         constraints: false,
       });
     }
   }
   Jobs.init({
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false,
+      primaryKey: true,
+    },
     title: DataTypes.STRING,
     type: DataTypes.STRING,
     location: DataTypes.STRING,

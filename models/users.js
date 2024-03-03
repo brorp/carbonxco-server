@@ -2,8 +2,7 @@
 const {
   Model
 } = require('sequelize');
-const {getSalt} = require('../helpers/hash')
-const { v4: uuidv4 } = require('uuid');
+const {hash_password} = require('../helpers/hash')
 module.exports = (sequelize, DataTypes) => {
   class Users extends Model {
     /**
@@ -13,13 +12,23 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.hasMany(models.Users, {
+      this.belongsTo(models.Clients, {
+        foreignKey: "user_id",
+        constraints: false,
+      });
+      this.belongsTo(models.Careers, {
         foreignKey: "user_id",
         constraints: false,
       });
     }
   }
   Users.init({
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false,
+      primaryKey: true,
+    },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -42,7 +51,6 @@ module.exports = (sequelize, DataTypes) => {
     password: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: () => getSalt(uuidv4())
     },
     name: {
       type: DataTypes.STRING,
@@ -71,7 +79,7 @@ module.exports = (sequelize, DataTypes) => {
       beforeCreate: (user) => {
         const currentDate = new Date();
         const currentTimeString = currentDate.toLocaleTimeString();
-        user.password = getSalt(currentTimeString)
+        user.password = hash_password(currentTimeString)
       }
   },
     sequelize,

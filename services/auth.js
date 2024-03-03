@@ -1,6 +1,6 @@
 const {Users} = require("../models/index");
 const { signToken } = require('../helpers/jwt')
-const { comparePassword } = require('../helpers/hash')
+const { hash_password } = require('../helpers/hash')
 class AuthService {
     static login = async (params, next) => {
 
@@ -8,22 +8,20 @@ class AuthService {
             let response = await Users.findOne({
                 where: {
                     email: params.email,
-                }
+                },
+                attributes: {exclude: 'user_id'}
             });
-
-            if(response && comparePassword(params.password, response.password)){
-                const access_token = signToken({
-                    id: response.id,
-                    email: response.email,
-                    role: response.role
-                })  
-                return {
-                    access_token: access_token
-                }
+            if (response.password !== hash_password(params.password)) {
+                throw { message: 'Email or Password is incorrect', code: 401 }
             }
 
-            else {
-                throw { code: 401, message: 'Email or Password is incorrect' }
+            const access_token = signToken({
+                id: response.id,
+                email: response.email,
+                role: response.role
+            })  
+            return {
+                access_token: access_token
             }
 
         } catch (error) {
@@ -31,6 +29,8 @@ class AuthService {
         }
 
     }
+
+
 }
 
 module.exports = AuthService

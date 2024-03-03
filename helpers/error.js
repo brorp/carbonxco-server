@@ -16,6 +16,15 @@ const error = (err, req, res, next) => {
         status: 400,
         message,
       });
+    }else if (err.name === 'SequelizeDatabaseError') {
+      let message = err.original;
+      for (let field in err.errors) {
+        message = err.errors[field].message;
+      }
+      res.status(400).json({
+        status: 400,
+        message,
+      });
     }else if(err.name === 'ParameterMissingError'){
       res.status(400).json({
         status: 400,

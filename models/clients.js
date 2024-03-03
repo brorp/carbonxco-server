@@ -10,13 +10,19 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.belongsTo(models.Users, {
+      this.hasMany(models.Users, {
         foreignKey: "user_id",
         constraints: false,
       });
     }
   }
   Clients.init({
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false,
+      primaryKey: true,
+    },
     user_id: {
       allowNull: false,
       type: DataTypes.INTEGER,

@@ -8,4 +8,4 @@ route.get("/v1", VersionController.status);
 route.use("/v1/w", web_route)
 route.use("/v1/c", cms_route)
 
-module.exports = route; 
+module.exports = route;

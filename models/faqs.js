@@ -14,8 +14,15 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Faqs.init({
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false,
+      primaryKey: true,
+    },
     question: DataTypes.STRING,
-    answer: DataTypes.TEXT
+    answer: DataTypes.TEXT,
+    is_archived: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'Faqs',

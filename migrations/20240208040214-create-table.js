@@ -6,19 +6,14 @@ module.exports = {
     await queryInterface.createTable('Users', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID
       },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
       },
       updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      deletedAt: {
         allowNull: false,
         type: Sequelize.DATE
       },
@@ -48,9 +43,8 @@ module.exports = {
     await queryInterface.createTable('Blogs', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID
       },
       createdAt: {
         allowNull: false,
@@ -72,14 +66,19 @@ module.exports = {
       category: {
         type: Sequelize.INTEGER,
       },
+      meta_title: {
+        type: Sequelize.STRING
+      },
+      meta_description: {
+        type: Sequelize.STRING
+      },
     });
 
     await queryInterface.createTable('Teams', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID
       },
       createdAt: {
         allowNull: false,
@@ -107,9 +106,8 @@ module.exports = {
     await queryInterface.createTable('Jobs', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID
       },
       createdAt: {
         allowNull: false,
@@ -140,9 +138,8 @@ module.exports = {
     await queryInterface.createTable('Careers', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID
       },
       createdAt: {
         allowNull: false,
@@ -177,9 +174,8 @@ module.exports = {
     await queryInterface.createTable('Faqs', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID
       },
       question: {
         type: Sequelize.STRING,
@@ -200,9 +196,8 @@ module.exports = {
     await queryInterface.createTable('Documents', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID
       },
       createdAt: {
         allowNull: false,
@@ -241,9 +236,8 @@ module.exports = {
     await queryInterface.createTable('Projects', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID
       },
       createdAt: {
         allowNull: false,
@@ -294,9 +288,8 @@ module.exports = {
     await queryInterface.createTable('Clients', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID
       },
       createdAt: {
         allowNull: false,

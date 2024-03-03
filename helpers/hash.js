@@ -1,14 +1,13 @@
-var CryptoJS = require("crypto-js");
+const crypto = require('crypto');
+// const comparePassword = (password, hashedPass) => {
+//     return bcrypt.compareSync(password, hashedPass)
+// }
 
-const comparePassword = (string) => {
-    var bytes  = CryptoJS.AES.decrypt(string, process.env.CRYPTO_KEY);
-    var originalText = bytes.toString(CryptoJS.enc.Utf8);
-    return originalText
+const hash_password = (password) => {
+    const secret = process.env.CRYPTO_SECRET
+    const hash =  crypto.createHmac('sha256', "BANDUNG")
+                        .update(password)
+                        .digest('hex')
+    return hash
 }
-
-const getSalt = (string) => {
-    var ciphertext = CryptoJS.AES.encrypt(string, process.env.CRYPTO_KEY);
-    return ciphertext
-}
-
-module.exports = { getSalt, comparePassword }
+module.exports = { hash_password }

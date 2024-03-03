@@ -13,12 +13,18 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Blogs.init({
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false,
+      primaryKey: true,
+    },
     author: DataTypes.STRING,
     title: DataTypes.STRING,
     content: DataTypes.TEXT,
     category: DataTypes.ENUM('news','insight','all_about_carbon'),
-    slug: DataTypes.TEXT,
-    meta_tag: DataTypes.TEXT
+    meta_title: DataTypes.STRING,
+    meta_description: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Blogs',
