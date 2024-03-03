@@ -64,7 +64,7 @@ module.exports = {
         type: Sequelize.TEXT,
       },
       category: {
-        type: Sequelize..ENUM('news','insight','all_about_carbon'),
+        type: Sequelize.ENUM('news','insight','all_about_carbon'),
       },
       meta_title: {
         type: Sequelize.STRING
