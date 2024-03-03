@@ -13,30 +13,31 @@
     "morgan": "^1.10.0",
     "node-cron": "^3.0.2",
     "pg": "^8.11.3",
+    "pm2": "^5.3.1",
     "sequelize": "^6.28.0",
     "strong-params": "^1.0.0",
     "uuid": "^9.0.1",
     "uuidv4": "^6.2.13"
   },
-  "name": "worthy-api",
+  "name": "carbonxco-server",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npx nodemon bin/www",
-    "ssh-dev": "ssh -i 'worthy.pem' ubuntu@ec2-52-221-246-139.ap-southeast-1.compute.amazonaws.com"
+    "ssh-dev": "ssh -i 'carbonxco.pem' ubuntu@ec2-13-250-56-213.ap-southeast-1.compute.amazonaws.com"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/brorp/worthy-api.git"
+    "url": "git+https://github.com/brorp/carbonxco-server.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/brorp/worthy-api/issues"
+    "url": "https://github.com/brorp/carbonxco-server/issues"
   },
-  "homepage": "https://github.com/brorp/worthy-api#readme",
+  "homepage": "https://github.com/brorp/carbonxco-server#readme",
   "description": "",
   "devDependencies": {
     "@types/module-alias": "^2.0.1",
