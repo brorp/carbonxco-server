@@ -4,6 +4,7 @@ const {hash_password} = require('../helpers/hash')
 module.exports = {
   async up (queryInterface, Sequelize) {
     let data = [{
+      id: gen_random_uuid(),
       name: 'Admin Carbonxco',
       email: 'superadmin@carbonxco.com',
       password: hash_password('Carbon123!'),
