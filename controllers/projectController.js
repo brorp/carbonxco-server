@@ -16,7 +16,7 @@ class ProjectController {
                 "main_goal",
                 "key_factor",
                 "other",
-                "sdg",
+                { 'sdg': [] },
                 "status"
             ).value()
 
@@ -69,7 +69,7 @@ class ProjectController {
                 "main_goal",
                 "key_factor",
                 "other",
-                "sdg",
+                { 'sdg': [] },
                 "status"
             ).value()
 
