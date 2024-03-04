@@ -1,9 +1,11 @@
 'use strict';
 /** @type {import('sequelize-cli').Migration} */
 const {hash_password} = require('../helpers/hash')
+const {uuid} = require('uuidv4')
 module.exports = {
   async up (queryInterface, Sequelize) {
     let data = [{
+      id: uuid(),
       name: 'Admin Carbonxco',
       email: 'superadmin@carbonxco.com',
       password: hash_password('Carbon123!'),
