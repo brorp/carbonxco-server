@@ -192,6 +192,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       },
+      is_archived: {
+        type: Sequelize.BOOLEAN,
+        default: false
+      }
     });
 
     await queryInterface.createTable('Documents', {
@@ -278,7 +282,7 @@ module.exports = {
       other: {
         type: Sequelize.TEXT,
       },
-      scopes: {
+      sdg: {
         type: Sequelize.ARRAY(Sequelize.STRING),
       },
       status: {

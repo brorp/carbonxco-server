@@ -51,10 +51,10 @@ class CareerController {
             let {id} = req.params
             let params = req.parameters;
             params = params.permit(
-                "author",
-                "title",
-                "content",
-                "category_id"
+                "email",
+                "name",
+                "phone",
+                "address"
             ).value()
 
             let data = await CareerService.update(id, params, next);

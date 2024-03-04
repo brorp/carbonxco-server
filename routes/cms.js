@@ -7,7 +7,8 @@ const BlogController = require('../controllers/blogController');
 const JobController = require('../controllers/jobController');
 const ProjectController = require('../controllers/projectController');
 const AuthController = require('../controllers/authController');
-const authentication = require('../middlewares/authentication')
+const authentication = require('../middlewares/authentication');
+const CareerController = require("@controllers/careerController");
 
 cms_router.post('/login', AuthController.login)
 
@@ -18,6 +19,7 @@ cms_router.post("/faqs", FaqController.post);
 cms_router.get("/faqs", FaqController.all);
 cms_router.get("/faqs/:id", FaqController.detail);
 cms_router.put("/faqs/:id", FaqController.update);
+cms_router.patch("/faqs/:id/archive", FaqController.archived)
 cms_router.delete("/faqs/:id", FaqController.delete);
 
 // Teams
@@ -42,7 +44,6 @@ cms_router.put("/projects/:id", ProjectController.update);
 cms_router.delete("/projects/:id", ProjectController.delete);
 
 // Contact Us
-cms_router.post("/contact-us", ClientController.post);
 cms_router.get("/contact-us", ClientController.all);
 cms_router.get("/contact-us/:id", ClientController.detail);
 cms_router.delete("/contact-us/:id", ClientController.delete);
@@ -53,5 +54,9 @@ cms_router.get("/jobs", JobController.all);
 cms_router.get("/jobs/:id", JobController.detail);
 cms_router.put("/jobs/:id", JobController.update);
 cms_router.delete("/jobs/:id", JobController.delete);
+
+// Applicant
+cms_router.get("/applicants", CareerController.all);
+cms_router.delete("/applicants/:id", CareerController.delete);
 
 module.exports = cms_router

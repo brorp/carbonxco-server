@@ -5,7 +5,7 @@ const crypto = require('crypto');
 
 const hash_password = (password) => {
     const secret = process.env.CRYPTO_SECRET
-    const hash =  crypto.createHmac('sha256', "BANDUNG")
+    const hash =  crypto.createHmac('sha256', process.env.CRYPTO_SECRET)
                         .update(password)
                         .digest('hex')
     return hash

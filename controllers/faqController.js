@@ -62,6 +62,23 @@ class FaqController {
         }
     }
 
+    static archived = async(req, res, next) => {
+        try {
+            let {id} = req.params
+            let params = req.parameters;
+            params = params.permit(
+                "is_archived"
+            ).value()
+
+            let data = await FaqService.update(id, params, next);
+            if(data) {
+                res.status(201).json({message: "Success Update"})
+            }
+        } catch (error) {
+            next(error)
+        }
+    }
+
     static delete = async(req,res,next) => {
         try {
             let { id } = req.params;

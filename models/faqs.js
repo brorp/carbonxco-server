@@ -22,7 +22,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     question: DataTypes.STRING,
     answer: DataTypes.TEXT,
-    is_archived: DataTypes.BOOLEAN
+    is_archived: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
   }, {
     sequelize,
     modelName: 'Faqs',
