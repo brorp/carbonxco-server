@@ -5,6 +5,7 @@ class ProjectService {
     static all = async (params, next) => {
         try {
             let where = {}
+            let order = ['id', 'DESC']
             if (params.keyword) {
                 where = {
                     [Op.or]: {
@@ -18,14 +19,15 @@ class ProjectService {
                 }
             }
 
-            if (params.status) {
-                where.status = params.status
+            if (params.sort && params.order) {
+                order[0] = params.sort
+                order[1] = params.order
             }
 
             let projects = await Projects.findAndCountAll({
                 where,
                 order: [
-                    ['id', 'DESC'],
+                    order,
                 ],
             });
 
@@ -100,6 +102,60 @@ class ProjectService {
 
             await Projects.destroy({where: params.id})
             return true
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    static getMore = async(id, next) => {
+        try {
+            if(!id) {
+                throw {code: 404, message: 'need params id'}
+            }
+
+            let existingProject = await Projects.findOne({
+                where: {id}
+            })
+
+            if (!existingProject) {
+                throw {code: 404, message: 'data not found'}
+            }
+
+            let project = {}
+
+            project = await Projects.findOne({
+                where: {
+                    [Op.and]: [
+                        {
+                            id: {[Op.not]: {id}}
+                        },
+                        {
+                            createdAt: {[Op.gt]: existingProject.createdAt}
+                        }
+                    ]
+                },
+                order: [['createdAt', 'ASC']],
+                limit: 1
+            })
+
+            if (!project) {
+                project = await Projects.findOne({
+                    where: {
+                        [Op.and]: [
+                            {
+                                id: {[Op.not]: {id}}
+                            },
+                            {
+                                createdAt: {[Op.lt]: existingProject.createdAt}
+                            }
+                        ]
+                    },
+                    order: [['createdAt', 'ASC']],
+                    limit: 1
+                })
+            }
+
+            return blog
         } catch (error) {
             next(error)
         }

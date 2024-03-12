@@ -45,9 +45,9 @@ class ProjectController {
     static detail = async(req,res,next) => {
         try {
             let { id } = req.params;
-            let admin = await ProjectService.detail(id, next);
-            if (admin) {
-                res.status(200).json(admin);
+            let project = await ProjectService.detail(id, next);
+            if (project) {
+                res.status(200).json(project);
             }
         } catch (error) {
             next(error)
@@ -88,6 +88,18 @@ class ProjectController {
             let data = await ProjectService.delete(id, next);
             if (data) {
                 res.status(200).json({message: "Success Delete"});
+            }
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    static more = async(req,res,next) => {
+        try {
+            let { id } = req.params;
+            let project = await ProjectService.getMore(id, next);
+            if (project) {
+                res.status(200).json(project);
             }
         } catch (error) {
             next(error)

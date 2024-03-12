@@ -5,6 +5,7 @@ class TeamService {
     static all = async (params, next) => {
         try {
             let where = {}
+            let order = ['id', 'DESC']
             if (params.keyword) {
                 where = {
                     [Op.or]: {
@@ -18,14 +19,15 @@ class TeamService {
                 }
             }
 
-            if (params.status) {
-                where.status = params.status
+            if (params.sort && params.order) {
+                order[0] = params.sort
+                order[1] = params.order
             }
 
             let teams = await Teams.findAndCountAll({
                 where,
                 order: [
-                    ['id', 'DESC'],
+                    order,
                 ],
             });
 

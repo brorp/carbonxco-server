@@ -37,9 +37,9 @@ class BlogController {
     static detail = async(req,res,next) => {
         try {
             let { id } = req.params;
-            let admin = await BlogService.detail(id, next);
-            if (admin) {
-                res.status(200).json(admin);
+            let blog = await BlogService.detail(id, next);
+            if (blog) {
+                res.status(200).json(blog);
             }
         } catch (error) {
             next(error)
@@ -72,6 +72,18 @@ class BlogController {
             let data = await BlogService.delete(id, next);
             if (data) {
                 res.status(200).json({message: "Success Delete"});
+            }
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    static more = async(req,res,next) => {
+        try {
+            let { id } = req.params;
+            let blog = await BlogService.getMore(id, next);
+            if (blog) {
+                res.status(200).json(blog);
             }
         } catch (error) {
             next(error)

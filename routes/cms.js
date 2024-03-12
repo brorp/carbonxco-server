@@ -7,8 +7,8 @@ const BlogController = require('../controllers/blogController');
 const JobController = require('../controllers/jobController');
 const ProjectController = require('../controllers/projectController');
 const AuthController = require('../controllers/authController');
-const authentication = require('../middlewares/authentication');
 const CareerController = require("@controllers/careerController");
+const authentication = require('../middlewares/authentication');
 
 cms_router.post('/login', AuthController.login)
 
