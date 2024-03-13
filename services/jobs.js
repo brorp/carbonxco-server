@@ -92,7 +92,7 @@ class JobService {
                 throw {code: 404, message: 'need params'}
             }
 
-            await Jobs.destroy({where: params.id})
+            await Jobs.destroy({where: {id: params.id}})
             return true
         } catch (error) {
             next(error)

@@ -86,7 +86,7 @@ class TeamService {
                 throw {code: 404, message: 'need params'}
             }
 
-            await Teams.destroy({where: params.id})
+            await Teams.destroy({where: {id: params.id}})
             return true
         } catch (error) {
             next(error)

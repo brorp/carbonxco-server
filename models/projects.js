@@ -25,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
     start_date: DataTypes.BIGINT,
     location: DataTypes.STRING,
     area: DataTypes.STRING,
+    area_description: DataTypes.TEXT,
     ecosystem_type: DataTypes.TEXT,
     community: DataTypes.TEXT,
     main_goal: DataTypes.TEXT,

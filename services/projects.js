@@ -100,7 +100,7 @@ class ProjectService {
                 throw {code: 404, message: 'need params'}
             }
 
-            await Projects.destroy({where: params.id})
+            await Projects.destroy({where: {id: params.id}})
             return true
         } catch (error) {
             next(error)
