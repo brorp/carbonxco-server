@@ -80,13 +80,13 @@ class TeamService {
         }
     }
 
-    static delete = async (params, next) => {
+    static delete = async (id, next) => {
         try {
-            if(!params) {
-                throw {code: 404, message: 'need params'}
+            if(!id) {
+                throw {code: 404, message: 'need params id'}
             }
 
-            await Teams.destroy({where: {id: params.id}})
+            await Teams.destroy({where: {id}})
             return true
         } catch (error) {
             next(error)
