@@ -82,10 +82,10 @@ class CareerService {
         }
     }
 
-    static delete = async (params, next) => {
+    static delete = async (id, next) => {
         try {
-            if(!params) {
-                throw {code: 404, message: 'need params'}
+            if(!id) {
+                throw {code: 404, message: 'need params id'}
             }
 
             await Careers.destroy({where: {id}})

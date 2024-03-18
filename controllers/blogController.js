@@ -9,7 +9,10 @@ class BlogController {
                 "author",
                 "title",
                 "content",
-                "category_id"
+                "category",
+                "meta_title",
+                "meta_description",
+                "project_summary"
             ).value()
 
             let data = await BlogService.create(params, next);
@@ -54,7 +57,10 @@ class BlogController {
                 "author",
                 "title",
                 "content",
-                "category_id"
+                "category",
+                "meta_title",
+                "meta_description",
+                "project_summary"
             ).value()
 
             let data = await BlogService.update(id, params, next);

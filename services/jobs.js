@@ -50,6 +50,7 @@ class JobService {
 
             let job = await Jobs.findOne({
                 where: {id},
+                attributes: {exclude: ["job_id", "user_id"]}
             })
 
             return job

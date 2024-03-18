@@ -19,7 +19,7 @@ class ClientService {
                 order[1] = params.order
             }
 
-            let faqs = await Clients.findAndCountAll({
+            let data = await Clients.findAndCountAll({
                 where,
                 include: {model: Users, attributes: ['name', 'email', 'phone']},
                 order: [
@@ -27,7 +27,7 @@ class ClientService {
                 ],
             });
 
-            return faqs;
+            return data;
         } catch (error) {
             next(error)
         }
@@ -41,12 +41,12 @@ class ClientService {
 
             let client = await Clients.findOne({
                 where: {id},
-                include: {model: Users, attributes: ['name', 'email', 'phone']}
+                include: {model: Users, attributes: ['name', 'email', 'phone']},
             })
             if (!client) {
                 throw {code: 404, message: 'data not found'}
             }
-            return faq
+            return client
         } catch (error) {
             next(error)
         }
