@@ -11,6 +11,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.hasMany(models.Documents, {
+        foreignKey: 'reference_id', // Assuming reference_id is the foreign key in the Documents table referencing the Blogs table
+        scope: {
+          reference_type: 'projects', // Assuming reference_type is the column specifying the type of reference
+        },
+        as: 'documents', // Alias to access documents associated with a blog
+      });
     }
   }
   Projects.init({

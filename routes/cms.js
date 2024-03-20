@@ -9,6 +9,8 @@ const ProjectController = require('../controllers/projectController');
 const AuthController = require('../controllers/authController');
 const CareerController = require("@controllers/careerController");
 const authentication = require('../middlewares/authentication');
+const DocumentController = require("@controllers/documentController");
+const { parseFile } = require("@helpers/multer");
 
 cms_router.post('/login', AuthController.login)
 
@@ -58,5 +60,8 @@ cms_router.delete("/jobs/:id", JobController.delete);
 // Applicant
 cms_router.get("/applicants", CareerController.all);
 cms_router.delete("/applicants/:id", CareerController.delete);
+
+cms_router.post("/documents", parseFile, DocumentController.post);
+cms_router.get("/documents/:id/url", DocumentController.url);
 
 module.exports = cms_router

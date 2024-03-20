@@ -1,78 +1,31 @@
-const pagination = require("../helpers/pagination");
-const BlogService = require('../services/blogs')
-
+const DocumentService = require('../services/documents')
 class DocumentController {
     static post = async(req, res, next) => {
         try {
             let params = req.parameters;
-            params = params.permit(
-                "author",
-                "title",
-                "content",
-                "category_id"
-            ).value()
-
-            let data = await BlogService.create(params, next);
+            params.file = req.file.buffer
+            params.file_type = req.file.mimetype
+            params.file_name = req.file.originalname
+            params.id = req.body.id
+            params.reference_type = req.body.reference_type
+            params.document_type = req.body.document_type
+            params.size = req.file.size
+            let data = await DocumentService.upsert(params, next);
             if(data) {
-                res.status(201).json({message: "Success Create"})
+                res.status(201).json(data)
             }
         } catch (error) {
             next(error)
         }
     }
 
-    static all = async(req,res,next) => {
-        try {
-            let { page, limit } = req.query
-            let { keyword, sort, order } = req.query
-            let data = await BlogService.all({ keyword, sort, order }, next);
-            if (data) {
-                res.status(200).json(pagination(data, { page, limit }));
-            }
-        } catch (error) {
-            next(error)
-        }
-    }
-
-    static detail = async(req,res,next) => {
+    static url = async(req, res, next) => {
         try {
             let { id } = req.params;
-            let admin = await BlogService.detail(id, next);
-            if (admin) {
-                res.status(200).json(admin);
-            }
-        } catch (error) {
-            next(error)
-        }
-    }
-
-    static update = async(req, res, next) => {
-        try {
-            let {id} = req.params
-            let params = req.parameters;
-            params = params.permit(
-                "author",
-                "title",
-                "content",
-                "category_id"
-            ).value()
-
-            let data = await BlogService.update(id, params, next);
-            if(data) {
-                res.status(201).json({message: "Success Update"})
-            }
-        } catch (error) {
-            next(error)
-        }
-    }
-
-    static delete = async(req,res,next) => {
-        try {
-            let { id } = req.params;
-            let data = await BlogService.delete(id, next);
-            if (data) {
-                res.status(200).json({message: "Success Delete"});
-            }
+            let document = await DocumentService.getUrl(id, next)
+            if (document) {
+                res.status(200).json(document);
+            } 
         } catch (error) {
             next(error)
         }

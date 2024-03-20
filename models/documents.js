@@ -20,7 +20,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       primaryKey: true,
     },
-    reference_id: DataTypes.UUID,
+    reference_id: {
+      type: DataTypes.UUID,
+      defaultValue: '00000000-0000-0000-0000-000000000000',
+    },
     reference_type: {
       allowNull: false,
       type: DataTypes.ENUM("careers", "projects", "pages", "blogs", "teams")
@@ -29,13 +32,7 @@ module.exports = (sequelize, DataTypes) => {
     file_name: DataTypes.STRING,
     file_type: DataTypes.STRING,
     document_type: DataTypes.STRING
-  }, { hooks: {
-    beforeCreate: (document) => {
-      const currentDate = new Date();
-      const currentTimeString = currentDate.toLocaleTimeString();
-      document.file_name = getSalt(currentTimeString)
-    }
-  },
+  }, { 
     sequelize,
     modelName: 'Documents',
   });

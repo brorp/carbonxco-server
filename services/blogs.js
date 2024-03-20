@@ -1,5 +1,7 @@
-const { Blogs, Categories, sequelize } = require("../models/index");
-const { Op } = require("sequelize");
+const { Blogs, Documents, sequelize } = require("../models/index");
+const { Op, Sequelize } = require("sequelize");
+const DocumentService = require("./documents");
+const {asyncForEach} = require("../helpers/async_loop")
 
 class BlogService {
     static all = async (params, next) => {
@@ -26,6 +28,12 @@ class BlogService {
 
             let blogs = await Blogs.findAndCountAll({
                 where,
+                include: [
+                    {
+                        model: Documents, 
+                        as: 'documents', 
+                    },
+                ],
                 order: [
                     order,
                 ],
@@ -45,8 +53,18 @@ class BlogService {
             }
 
             let blog = await Blogs.findOne({
-                where: {id}, 
+                where: {id},
+                include: [
+                    {
+                        model: Documents, 
+                        as: 'documents', 
+                    },
+                ], 
             })
+
+            if (!blog ){
+                throw {code: 404, message: 'data not found'}
+            }
 
             return blog
         } catch (error) {
@@ -55,14 +73,37 @@ class BlogService {
     }
 
     static create = async (params, next) => {
+        const transaction = await sequelize.transaction();
         try {
             if(!params) {
                 throw {code: 404, message: 'need params'}
             }
             
-            await Blogs.create(params)
+            let blog = await Blogs.create(params, {
+                returning: true
+            })
 
-            return true
+            let doc = await DocumentService.updateReferenceId({
+                reference_id: blog.id,
+                reference_type: "blogs"
+            }, next);
+
+            if(doc) {
+                blog = await Blogs.findOne({
+                    where: {id: blog.id},
+                    include: [
+                        {
+                            model: Documents, 
+                            as: 'documents', 
+                        },
+                    ], 
+                })
+                await transaction.commit();
+                return blog
+            }
+            else {
+                throw {code: 400, message: 'bad request'}
+            }
         } catch (error){
             next(error)
         }

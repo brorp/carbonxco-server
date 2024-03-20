@@ -2,6 +2,6 @@ const multer = require("multer")
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
 
-const uploadFile = upload.single('file')
+const parseFile = upload.single('file')
 
-module.exports = {uploadFile}
+module.exports = {parseFile}

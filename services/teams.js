@@ -1,6 +1,6 @@
-const { Teams, sequelize } = require("../models/index");
+const { Teams, Documents, sequelize } = require("../models/index");
 const { Op } = require("sequelize");
-
+const DocumentService = require("./documents");
 class TeamService {
     static all = async (params, next) => {
         try {
@@ -26,6 +26,12 @@ class TeamService {
 
             let teams = await Teams.findAndCountAll({
                 where,
+                include: [
+                    {
+                        model: Documents, 
+                        as: 'documents', 
+                    },
+                ], 
                 order: [
                     order,
                 ],
@@ -44,7 +50,15 @@ class TeamService {
                 throw {code: 404, message: 'need params or id'}
             }
 
-            let team = await Teams.findOne({where: {id}})
+            let team = await Teams.findOne({
+                where: {id},
+                include: [
+                    {
+                        model: Documents, 
+                        as: 'documents', 
+                    },
+                ], 
+            })
 
             return team
         } catch (error) {
@@ -53,14 +67,36 @@ class TeamService {
     }
 
     static create = async (params, next) => {
+        const transaction = await sequelize.transaction();
         try {
             if(!params) {
                 throw {code: 404, message: 'need params'}
             }
             
-            await Teams.create(params)
+            let team = await Teams.create(params, {
+                returning: true
+            })
+            
+            let doc = await DocumentService.updateReferenceId({
+                reference_id: team.id,
+                reference_type: "teams"
+            }, next);
 
-            return true
+            if(!doc) {
+                throw {code: 400, message: 'no documents found'}
+            }
+
+            team = await Teams.findOne({
+                where: {id: team.id},
+                include: [
+                    {
+                        model: Documents, 
+                        as: 'documents', 
+                    },
+                ], 
+            })
+            await transaction.commit();
+            return team            
         } catch (error){
             next(error)
         }

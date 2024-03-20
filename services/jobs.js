@@ -53,6 +53,11 @@ class JobService {
                 attributes: {exclude: ["job_id", "user_id"]}
             })
 
+
+            if (!job ){
+                throw {code: 404, message: 'data not found'}
+            }
+
             return job
         } catch (error) {
             next(error)
