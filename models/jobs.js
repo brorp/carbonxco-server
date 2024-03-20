@@ -11,12 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.belongsTo(models.Careers, {
+      this.hasMany(models.Careers, {
         foreignKey: "job_id",
-        constraints: false,
-      });
-      this.belongsTo(models.Users, {
-        foreignKey: "user_id",
         constraints: false,
       });
     }

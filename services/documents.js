@@ -11,7 +11,6 @@ class DocumentService {
     };
 
     static validateTypeAndSizeOfFile = (params) => {
-        console.log(params)
         let allowedExtension = [
             "application/pdf",
             "image/jpg",
@@ -99,7 +98,7 @@ class DocumentService {
             if(!document) {
                 throw {code: 404, message: 'data not found'}
             }
-            console.log(document.key)
+
             const url = await S3Service.getSignedUrl('putObject', {
                 Bucket: this.bucketName,
                 Key: document.key,

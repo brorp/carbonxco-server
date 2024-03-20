@@ -1,7 +1,11 @@
 const { Clients, Users, sequelize } = require("../models/index")
 const { Op } = require("sequelize");
-
+const {hash_password} = require('../helpers/hash')
 class ClientService {
+    static alphanumeric = () => {
+        return hash_password((Date.now() + +Math.floor(Math.random() * 9999)).toString());
+    };
+
     static all = async (params, next) => {
         try {
             let where = {}
@@ -63,7 +67,8 @@ class ClientService {
                 email: params.email,
                 name: params.name,
                 phone: params.phone,
-                role: 'client'
+                role: 'client',
+                password: this.alphanumeric()
             }, {transaction})
 
             if (!user) {

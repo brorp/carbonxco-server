@@ -1,7 +1,6 @@
 const { Blogs, Documents, sequelize } = require("../models/index");
 const { Op, Sequelize } = require("sequelize");
 const DocumentService = require("./documents");
-const {asyncForEach} = require("../helpers/async_loop")
 
 class BlogService {
     static all = async (params, next) => {

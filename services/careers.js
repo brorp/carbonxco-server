@@ -39,7 +39,7 @@ class CareerService {
             let careers = await Careers.findAndCountAll({
                 where,
                 include: [
-                    {model: Jobs},
+                    {model: Jobs, attributes: {exclude: "job_id"}},
                     {model: Users, attributes: {exclude: 'password'}}
                 ],
                 order: [

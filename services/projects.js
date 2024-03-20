@@ -1,6 +1,6 @@
 const { Projects, Documents, sequelize } = require("../models/index");
 const { Op } = require("sequelize");
-
+const DocumentService = require("./documents");
 class ProjectService {
     static all = async (params, next) => {
         try {
