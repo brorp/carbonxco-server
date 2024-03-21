@@ -1,7 +1,7 @@
 const { Documents, sequelize } = require("../models/index")
 const S3Service = require("../config/s3")
 const {hash_password} = require('../helpers/hash')
-const {asyncForEach} = require("../helpers/async_loop")
+const {asyncForEach} = require("../helpers/async_loop");
 class DocumentService {
     static bucketName = process.env.BUCKET;
     static signedUrlExpireSeconds = 60 * 30;
@@ -60,6 +60,12 @@ class DocumentService {
 
             const uploadedFile = await S3Service.upload(paramsS3).promise();
 
+            let generatedUrl = process.env.OBJECT_URL + uploadedFile.Key
+            if (params.file_type == "image/svg+xml") {
+                const urlWithoutExtension = uploadedFile.Key.replace(/\.[^.]+$/, '');
+                generatedUrl = process.env.OBJECT_URL + urlWithoutExtension + ".svg%2Bxml"
+            }
+
             let document = {}
             if (!params.id) {
                 document = await Documents.create({
@@ -68,6 +74,7 @@ class DocumentService {
                     file_name: params.file_name,
                     file_type: params.file_type,
                     document_type: params.document_type,
+                    url: generatedUrl,
                 }, {returning: true},{transaction})
             }
 
@@ -78,6 +85,7 @@ class DocumentService {
                     file_name: params.file_name,
                     file_type: params.file_type,
                     document_type: params.document_type,
+                    url: generatedUrl,
                 }, {
                     where: {id: params.id},
                     returning: true

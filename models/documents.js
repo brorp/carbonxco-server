@@ -31,7 +31,8 @@ module.exports = (sequelize, DataTypes) => {
     key: DataTypes.STRING,
     file_name: DataTypes.STRING,
     file_type: DataTypes.STRING,
-    document_type: DataTypes.STRING
+    document_type: DataTypes.STRING,
+    url: DataTypes.STRING
   }, { 
     sequelize,
     modelName: 'Documents',

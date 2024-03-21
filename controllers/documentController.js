@@ -10,6 +10,7 @@ class DocumentController {
             params.reference_type = req.body.reference_type
             params.document_type = req.body.document_type
             params.size = req.file.size
+            
             let data = await DocumentService.upsert(params, next);
             if(data) {
                 res.status(201).json(data)
