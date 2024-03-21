@@ -30,6 +30,18 @@ class DocumentController {
             next(error)
         }
     }
+
+    static delete = async(req,res,next) => {
+        try {
+            let { id } = req.params;
+            let document = await DocumentService.delete(id, next)
+            if (document) {
+                res.status(200).json({message: 'Success Delete'});
+            } 
+        } catch (error) {
+            next(error)
+        }
+    }
 }
 
 module.exports = DocumentController

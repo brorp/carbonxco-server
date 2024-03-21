@@ -91,6 +91,28 @@ class DocumentService {
             next(error)
         }
     }
+    
+    static delete = async(id, next) => {
+        try {
+            if(!id) {
+                throw {code: 404, message: 'need params or id'}
+            }
+            let document = await Documents.findOne({
+                where: {id}
+            })
+
+            if(!document) {
+                throw {code: 404, message: 'data not found'}
+            }
+            await Documents.destroy({
+                where: {id}
+            })
+
+            return true
+        } catch (error) {
+            next(error)
+        }
+    }
 
     static getUrl = async(id, next) => {
         try {
@@ -115,7 +137,7 @@ class DocumentService {
             return {
                 url
             }
-            
+
         } catch (error) {
             next(error)
         }

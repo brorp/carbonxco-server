@@ -62,6 +62,7 @@ cms_router.get("/applicants", CareerController.all);
 cms_router.delete("/applicants/:id", CareerController.delete);
 
 cms_router.post("/documents", parseFile, DocumentController.post);
+cms_router.delete("/documents/:id", DocumentController.delete);
 cms_router.get("/documents/:id/url", DocumentController.url);
 
 module.exports = cms_router
