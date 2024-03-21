@@ -33,6 +33,12 @@ class DocumentService {
             throw { code: 400, message: 'File exceed maximum size' }
     }
 
+    static extFile = (params) => {
+        const parts = params.split('/');
+
+        return parts[1];
+    }
+
     static upsert = async (params, next) => {
         const transaction = await sequelize.transaction();
         try {
@@ -47,8 +53,9 @@ class DocumentService {
 
             const paramsS3 = {
                 Bucket: this.bucketName,
-                Key: this.alphanumeric(),
-                Body: params.file
+                Key: this.alphanumeric() + '.' + this.extFile(params.file_type),
+                Body: params.file,
+                'Content-Type': params.file_type
             };
 
             const uploadedFile = await S3Service.upload(paramsS3).promise();
