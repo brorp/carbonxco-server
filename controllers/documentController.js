@@ -2,7 +2,6 @@ const DocumentService = require('../services/documents')
 class DocumentController {
     static post = async(req, res, next) => {
         try {
-            console.log(req.file)
             let params = req.parameters;
             params.file = req.file.buffer
             params.file_type = req.file.mimetype

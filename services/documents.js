@@ -106,19 +106,16 @@ class DocumentService {
                 throw {code: 404, message: 'data not found'}
             }
 
-            const url = await S3Service.getSignedUrl('putObject', {
+            const url = await S3Service.getSignedUrl('getObject', {
                 Bucket: this.bucketName,
                 Key: document.key,
                 Expires: this.signedUrlExpireSeconds,
-                ACL: "public-read",
-                ContentDisposition:"inline",
-                ContentType: document.file_type
             });
 
             return {
-                object: url,
-                url: process.env.OBJECT_URL + document.key
+                url
             }
+            
         } catch (error) {
             next(error)
         }
