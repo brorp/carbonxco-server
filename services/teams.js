@@ -32,6 +32,7 @@ class TeamService {
                         as: 'documents', 
                     },
                 ], 
+                distinct: true,
                 order: [
                     order,
                 ],

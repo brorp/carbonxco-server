@@ -33,6 +33,7 @@ class BlogService {
                         as: 'documents', 
                     },
                 ],
+                distinct: true,
                 order: [
                     order,
                 ],

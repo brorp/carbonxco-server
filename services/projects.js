@@ -29,6 +29,7 @@ class ProjectService {
                 order: [
                     order,
                 ],
+                distinct: true,
                 include: [
                     {
                         model: Documents, 
