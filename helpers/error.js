@@ -1,6 +1,6 @@
 const error = (err, req, res, next) => {
     console.log('====================================');
-    console.log(err.name);
+    console.log(err);
     console.log('====================================');
     if (err.code && err.code != 500) {
       res.status(err.code).json({

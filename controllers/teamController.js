@@ -9,7 +9,16 @@ class TeamController {
                 "name",
                 "position",
                 "description",
-                "link"
+                "link",
+                { 'documents': [
+                        "id",
+                        "file_type",
+                        "file_name",
+                        "url",
+                        "document_type",
+                        "key"             
+                    ] 
+                }
             ).value()
 
             let data = await TeamService.create(params, next);
@@ -54,12 +63,21 @@ class TeamController {
                 "name",
                 "position",
                 "description",
-                "link"
+                "link",
+                { 'documents': [
+                        "id",
+                        "file_type",
+                        "file_name",
+                        "url",
+                        "document_type",
+                        "key"             
+                    ] 
+                }
             ).value()
 
             let data = await TeamService.update(id, params, next);
             if(data) {
-                res.status(201).json({message: "Success Update"})
+                res.status(201).json(data)
             }
         } catch (error) {
             next(error)

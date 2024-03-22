@@ -12,7 +12,16 @@ class BlogController {
                 "category",
                 "meta_title",
                 "meta_description",
-                "project_summary"
+                "project_summary",
+                { 'documents': [
+                        "id",
+                        "file_type",
+                        "file_name",
+                        "url",
+                        "document_type",
+                        "key"             
+                    ] 
+                }
             ).value()
 
             let data = await BlogService.create(params, next);
@@ -60,12 +69,21 @@ class BlogController {
                 "category",
                 "meta_title",
                 "meta_description",
-                "project_summary"
+                "project_summary",
+                { 'documents': [
+                        "id",
+                        "file_type",
+                        "file_name",
+                        "url",
+                        "document_type",
+                        "key"             
+                    ] 
+                }
             ).value()
 
             let data = await BlogService.update(id, params, next);
             if(data) {
-                res.status(201).json({message: "Success Update"})
+                res.status(201).json(data)
             }
         } catch (error) {
             next(error)

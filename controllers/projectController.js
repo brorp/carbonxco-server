@@ -20,7 +20,16 @@ class ProjectController {
                 { 'sdg': [] },
                 "status",
                 "button_text",
-                "button_link_to"
+                "button_link_to",
+                { 'documents': [
+                        "id",
+                        "file_type",
+                        "file_name",
+                        "url",
+                        "document_type",
+                        "key"             
+                    ] 
+                }
             ).value()
 
             let data = await ProjectService.create(params, next);
@@ -76,12 +85,21 @@ class ProjectController {
                 { 'sdg': [] },
                 "status",
                 "button_text",
-                "button_link_to"
+                "button_link_to",
+                { 'documents': [
+                    "id",
+                    "file_type",
+                    "file_name",
+                    "url",
+                    "document_type",
+                    "key"             
+                ] 
+            }
             ).value()
 
             let data = await ProjectService.update(id, params, next);
             if(data) {
-                res.status(201).json({message: "Success Update"})
+                res.status(201).json(data)
             }
         } catch (error) {
             next(error)

@@ -80,43 +80,69 @@ class BlogService {
             
             let blog = await Blogs.create(params, {
                 returning: true
-            })
+            }, {transaction})
 
-            let doc = await DocumentService.updateReferenceId({
+            let docParams = {
+                documents: params.documents,
                 reference_id: blog.id,
                 reference_type: "blogs"
-            }, next);
+            }
+            let document = await DocumentService.upsert(docParams, transaction, next);
 
-            if(doc) {
-                blog = await Blogs.findOne({
-                    where: {id: blog.id},
-                    include: [
-                        {
-                            model: Documents, 
-                            as: 'documents', 
-                        },
-                    ], 
-                })
-                await transaction.commit();
-                return blog
+            if(!document) {
+                throw {code: 400, message: 'no documents found'}
             }
-            else {
-                throw {code: 400, message: 'bad request'}
-            }
+            
+            blog = await Blogs.findOne({
+                where: {id: blog.id},
+                include: [
+                    {
+                        model: Documents, 
+                        as: 'documents', 
+                    },
+                ], 
+            })
+
+            await transaction.commit();
+            return blog
         } catch (error){
             next(error)
         }
     }
 
     static update = async (id, params, next) => {
+        const transaction = await sequelize.transaction();
         try {
             if(!params || !id) {
                 throw {code: 404, message: 'need params or id'}
             }
 
-            await Blogs.update(params, {where: {id}})
+           let blog = await Blogs.update(params, {
+                where: {id}, 
+                returning:true
+            }, {transaction})
 
-            return true
+            let docParams = {
+                documents: params.documents,
+            }
+
+            let document = await DocumentService.upsert(docParams, transaction, next);
+            if(!document) {
+                throw {code: 400, message: 'no documents found'}
+            }
+
+            blog = await Blogs.findOne({
+                where: {id: blog[1][0].id},
+                include: [
+                    {
+                        model: Documents, 
+                        as: 'documents', 
+                    },
+                ], 
+            })
+
+            await transaction.commit();
+            return blog
         } catch (error) {
             next(error)
         }

@@ -73,13 +73,17 @@ class ProjectService {
                 throw {code: 404, message: 'need params'}
             }
             
-            let project = await Projects.create(params)
-            let doc = await DocumentService.updateReferenceId({
+            let project = await Projects.create(params, {transaction})
+
+            let docParams = {
+                documents: params.documents,
                 reference_id: project.id,
                 reference_type: "projects"
-            }, next);
+            }
 
-            if(!doc) {
+            let document = await DocumentService.upsert(docParams, transaction, next);
+
+            if(!document) {
                 throw {code: 400, message: 'no documents found'}
             }
 
@@ -92,6 +96,7 @@ class ProjectService {
                     },
                 ], 
             })
+
             await transaction.commit();
             return project     
         } catch (error){
@@ -100,14 +105,38 @@ class ProjectService {
     }
 
     static update = async (id, params, next) => {
+        const transaction = await sequelize.transaction();
         try {
             if(!params || !id) {
                 throw {code: 404, message: 'need params or id'}
             }
 
-            await Projects.update(params, {where: {id}})
+            let project = await Projects.update(params, {
+                where: {id}, 
+                returning:true
+            }, {transaction})
+   
+            let docParams = {
+                documents: params.documents,
+            }
 
-            return true
+            let document = await DocumentService.upsert(docParams, transaction, next);
+            if(!document) {
+                throw {code: 400, message: 'no documents found'}
+            }
+
+            project = await Projects.findOne({
+                where: {id: project[1][0].id},
+                include: [
+                    {
+                        model: Documents, 
+                        as: 'documents', 
+                    },
+                ], 
+            })
+
+            await transaction.commit();
+            return project
         } catch (error) {
             next(error)
         }

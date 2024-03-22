@@ -75,14 +75,17 @@ class TeamService {
             
             let team = await Teams.create(params, {
                 returning: true
-            })
+            }, {transaction})
             
-            let doc = await DocumentService.updateReferenceId({
+            let docParams = {
+                documents: params.documents,
                 reference_id: team.id,
                 reference_type: "teams"
-            }, next);
+            }
 
-            if(!doc) {
+            let document = await DocumentService.upsert(docParams, transaction, next);
+
+            if(!document) {
                 throw {code: 400, message: 'no documents found'}
             }
 
@@ -95,6 +98,7 @@ class TeamService {
                     },
                 ], 
             })
+
             await transaction.commit();
             return team            
         } catch (error){
@@ -103,14 +107,38 @@ class TeamService {
     }
 
     static update = async (id, params, next) => {
+        const transaction = await sequelize.transaction();
         try {
             if(!params || !id) {
                 throw {code: 404, message: 'need params or id'}
             }
 
-            await Teams.update(params, {where: {id}})
+            let team = await Teams.update(params, {
+                where: {id},
+                returning: true
+            }, {transaction});
 
-            return true
+            let docParams = {
+                documents: params.documents,
+            }
+
+            let document = await DocumentService.upsert(docParams, transaction, next);
+            if(!document) {
+                throw {code: 400, message: 'no documents found'}
+            }
+
+            team = await Teams.findOne({
+                where: {id: team[1][0].id},
+                include: [
+                    {
+                        model: Documents, 
+                        as: 'documents', 
+                    },
+                ], 
+            })
+
+            await transaction.commit();
+            return team
         } catch (error) {
             next(error)
         }

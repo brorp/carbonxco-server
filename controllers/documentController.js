@@ -6,12 +6,9 @@ class DocumentController {
             params.file = req.file.buffer
             params.file_type = req.file.mimetype
             params.file_name = req.file.originalname
-            params.id = req.body.id
-            params.reference_type = req.body.reference_type
-            params.document_type = req.body.document_type
             params.size = req.file.size
-            
-            let data = await DocumentService.upsert(params, next);
+
+            let data = await DocumentService.upload(params, next);
             if(data) {
                 res.status(201).json(data)
             }

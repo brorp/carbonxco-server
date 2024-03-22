@@ -39,8 +39,7 @@ class DocumentService {
         return parts[1];
     }
 
-    static upsert = async (params, next) => {
-        const transaction = await sequelize.transaction();
+    static upload = async(params, next) => {
         try {
             if(!params) {
                 throw {code: 404, message: 'need params'}
@@ -66,34 +65,54 @@ class DocumentService {
                 generatedUrl = process.env.OBJECT_URL + urlWithoutExtension + ".svg%2Bxml"
             }
 
+            return {
+                url: generatedUrl,
+                key: uploadedFile.Key,
+                file_type: params.file_type,
+                file_name: params.file_name
+            }
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    static upsert = async (params, transaction, next) => {
+        try {
+            if(!params) {
+                throw {code: 404, message: 'need params'}
+            }
+
             let document = {}
-            if (!params.id) {
-                document = await Documents.create({
-                    reference_type: params.reference_type,
-                    key: uploadedFile.Key,
-                    file_name: params.file_name,
-                    file_type: params.file_type,
-                    document_type: params.document_type,
-                    url: generatedUrl,
-                }, {returning: true},{transaction})
-            }
 
-            if (params.id != "") {
-                let documentUpdate = await Documents.update({
-                    reference_type: params.reference_type,
-                    key: uploadedFile.Key,
-                    file_name: params.file_name,
-                    file_type: params.file_type,
-                    document_type: params.document_type,
-                    url: generatedUrl,
-                }, {
-                    where: {id: params.id},
-                    returning: true
-                },{transaction})
+            await asyncForEach(params.documents, async (el) => {
+                if (!el.id) {
+                    document = await Documents.create({
+                        reference_id: params.reference_id,
+                        reference_type: params.reference_type,
+                        key: el.key,
+                        file_name: el.file_name,
+                        file_type: el.file_type,
+                        document_type: el.document_type,
+                        url: el.url,
+                    }, {returning: true},{transaction})
+                }
 
-                document = documentUpdate[1][0]
-            }
-            await transaction.commit();
+                if (el.id != "") {
+                    let documentUpdate = await Documents.update({
+                        key: el.key,
+                        file_name: el.file_name,
+                        file_type: el.file_type,
+                        document_type: el.document_type,
+                        url: el.url,
+                    }, {
+                        where: {id: el.id},
+                        returning: true
+                    },{transaction})
+    
+                    document = documentUpdate[1][0]
+                }
+            })
+
             return document
         } catch (error) {
             next(error)
@@ -146,52 +165,6 @@ class DocumentService {
                 url
             }
 
-        } catch (error) {
-            next(error)
-        }
-    }
-
-    static find = async(params, next) => {
-        try {
-            if(!params) {
-                throw {code: 404, message: 'need params'}
-            }
-
-            let document = await Documents.findAll({
-                where: {
-                    reference_id: params.reference_id,
-                    reference_type: params.reference_type
-                }
-            })
-
-            return document
-        } catch (error) {
-            next(error)
-        }
-    }
-
-    static updateReferenceId = async(params, next) => {
-        try {
-            if(!params) {
-                throw {code: 404, message: 'need params'}
-            }
-
-            let documents = await Documents.findAll({
-                where: {
-                    reference_id: '00000000-0000-0000-0000-000000000000',
-                    reference_type: params.reference_type,
-                }
-            })
-
-            await asyncForEach(documents, async (el) => {
-                await Documents.update({
-                    reference_id: params.reference_id,
-                }, {
-                    where: {id: el.id}
-                })
-            })
-
-            return true
         } catch (error) {
             next(error)
         }
