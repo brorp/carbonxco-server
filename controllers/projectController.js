@@ -18,7 +18,9 @@ class ProjectController {
                 "key_factor",
                 "other",
                 { 'sdg': [] },
-                "status"
+                "status",
+                "button_text",
+                "button_link_to"
             ).value()
 
             let data = await ProjectService.create(params, next);
@@ -72,7 +74,9 @@ class ProjectController {
                 "key_factor",
                 "other",
                 { 'sdg': [] },
-                "status"
+                "status",
+                "button_text",
+                "button_link_to"
             ).value()
 
             let data = await ProjectService.update(id, params, next);

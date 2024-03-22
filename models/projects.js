@@ -39,7 +39,9 @@ module.exports = (sequelize, DataTypes) => {
     key_factor: DataTypes.TEXT,
     other: DataTypes.TEXT,
     sdg: DataTypes.ARRAY(DataTypes.STRING),
-    status: DataTypes.ENUM("Origination", "Due dilligence", "Development", "Implementation", "Issuance")
+    status: DataTypes.ENUM("Origination", "Due dilligence", "Development", "Implementation", "Issuance"),
+    button_text: DataTypes.STRING,
+    button_link_to: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Projects',
