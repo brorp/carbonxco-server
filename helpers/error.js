@@ -5,7 +5,7 @@ const error = (err, req, res, next) => {
     if (err.code && err.code != 500) {
       res.status(err.code).json({
         status: err.code,
-        message: err.message,
+        message: err.message.original,
       });
     } else if (err.name === 'SequelizeValidationError') {
       let message = '';
