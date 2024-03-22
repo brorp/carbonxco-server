@@ -1,29 +1,21 @@
 const error = (err, req, res, next) => {
     console.log('====================================');
-    console.log(err);
+    console.log(err.name);
     console.log('====================================');
     if (err.code && err.code != 500) {
       res.status(err.code).json({
         status: err.code,
-        message: err.message.original,
+        message: err.message,
       });
     } else if (err.name === 'SequelizeValidationError') {
-      let message = '';
-      for (let field in err.errors) {
-        message = err.errors[field].message;
-      }
       res.status(400).json({
         status: 400,
-        message,
+        message: err.message,
       });
     } else if (err.name === 'SequelizeDatabaseError') {
-      let message = err.original;
-      for (let field in err.errors) {
-        message = err.errors[field].message;
-      }
       res.status(400).json({
         status: 400,
-        message,
+        message: err.message,
       });
     } else if (err.name === 'invalidtoken') {
       res.status(401).json({
