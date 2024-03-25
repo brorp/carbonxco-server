@@ -75,8 +75,9 @@ class TeamService {
             }
             
             let team = await Teams.create(params, {
-                returning: true
-            }, {transaction})
+                returning: true,
+                transaction
+            })
             
             let docParams = {
                 documents: params.documents,

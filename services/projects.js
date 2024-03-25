@@ -74,7 +74,10 @@ class ProjectService {
                 throw {code: 404, message: 'need params'}
             }
             
-            let project = await Projects.create(params, {transaction})
+            let project = await Projects.create(params, {
+                returning: true,
+                transaction
+            })
 
             let docParams = {
                 documents: params.documents,

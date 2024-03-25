@@ -80,8 +80,9 @@ class BlogService {
             }
             
             let blog = await Blogs.create(params, {
-                returning: true
-            }, {transaction})
+                returning: true,
+                transaction
+            })
 
             let docParams = {
                 documents: params.documents,
