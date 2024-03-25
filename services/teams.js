@@ -91,18 +91,19 @@ class TeamService {
                 throw {code: 400, message: 'no documents found'}
             }
 
-            team = await Teams.findOne({
+            let res = await Teams.findOne({
                 where: {id: team.id},
                 include: [
                     {
                         model: Documents, 
                         as: 'documents', 
                     },
-                ], 
+                ],
+                transaction
             })
 
             await transaction.commit();
-            return team            
+            return res            
         } catch (error){
             next(error)
         }

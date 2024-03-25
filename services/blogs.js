@@ -95,18 +95,19 @@ class BlogService {
                 throw {code: 400, message: 'no documents found'}
             }
             
-            blog = await Blogs.findOne({
+            let res = await Blogs.findOne({
                 where: {id: blog.id},
                 include: [
                     {
                         model: Documents, 
                         as: 'documents', 
                     },
-                ], 
+                ],
+                transaction
             })
 
             await transaction.commit();
-            return blog
+            return res
         } catch (error){
             next(error)
         }
