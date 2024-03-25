@@ -94,7 +94,10 @@ class DocumentService {
                         file_type: el.file_type,
                         document_type: el.document_type,
                         url: el.url,
-                    }, {returning: true},{transaction})
+                    }, {
+                        returning: true,
+                        transaction
+                    })
                 }
 
                 if (el.id != "") {
@@ -106,8 +109,9 @@ class DocumentService {
                         url: el.url,
                     }, {
                         where: {id: el.id},
-                        returning: true
-                    },{transaction})
+                        returning: true,
+                        transaction
+                    })
     
                     document = documentUpdate[1][0]
                 }

@@ -8,6 +8,7 @@ class ProjectController {
             params = params.permit(
                 "title",
                 "description",
+                
                 "start_date",
                 "location",
                 "area",
