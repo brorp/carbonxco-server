@@ -168,8 +168,8 @@ class ProjectService {
 
             let existingProject = await Projects.findOne({
                 where: {id}
-            })
-
+            });
+            
             if (!existingProject) {
                 throw {code: 404, message: 'data not found'}
             }
@@ -180,13 +180,19 @@ class ProjectService {
                 where: {
                     [Op.and]: [
                         {
-                            id: {[Op.not]: {id}}
+                            id: {[Op.not]: id}
                         },
                         {
                             createdAt: {[Op.gt]: existingProject.createdAt}
                         }
                     ]
                 },
+                include: [
+                    {
+                        model: Documents, 
+                        as: 'documents', 
+                    },
+                ], 
                 order: [['createdAt', 'ASC']],
                 limit: 1
             })
@@ -196,19 +202,25 @@ class ProjectService {
                     where: {
                         [Op.and]: [
                             {
-                                id: {[Op.not]: {id}}
+                                id: {[Op.not]: id}
                             },
                             {
                                 createdAt: {[Op.lt]: existingProject.createdAt}
                             }
                         ]
                     },
+                    include: [
+                        {
+                            model: Documents, 
+                            as: 'documents', 
+                        },
+                    ], 
                     order: [['createdAt', 'ASC']],
                     limit: 1
                 })
             }
 
-            return blog
+            return project
         } catch (error) {
             next(error)
         }

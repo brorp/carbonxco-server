@@ -184,7 +184,7 @@ class BlogService {
                 where: {
                     [Op.and]: [
                         {
-                            id: {[Op.not]: {id}}
+                            id: {[Op.not]: id}
                         },
                         {
                             createdAt: {[Op.gt]: existingBlog.createdAt}
@@ -200,7 +200,7 @@ class BlogService {
                     where: {
                         [Op.and]: [
                             {
-                                id: {[Op.not]: {id}}
+                                id: {[Op.not]: id}
                             },
                             {
                                 createdAt: {[Op.lt]: existingBlog.createdAt}

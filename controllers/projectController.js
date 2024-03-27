@@ -8,7 +8,7 @@ class ProjectController {
             params = params.permit(
                 "title",
                 "description",
-                
+
                 "start_date",
                 "location",
                 "area",
@@ -121,7 +121,9 @@ class ProjectController {
 
     static more = async(req,res,next) => {
         try {
+            console.log(req.params, "<<<<")
             let { id } = req.params;
+            
             let project = await ProjectService.getMore(id, next);
             if (project) {
                 res.status(200).json(project);
