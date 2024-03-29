@@ -1,6 +1,7 @@
 const { Clients, Users, sequelize } = require("../models/index")
 const { Op } = require("sequelize");
-const {hash_password} = require('../helpers/hash')
+const {hash_password} = require('../helpers/hash');
+const { MailService } = require("./mail");
 class ClientService {
     static alphanumeric = () => {
         return hash_password((Date.now() + +Math.floor(Math.random() * 9999)).toString());
@@ -69,7 +70,10 @@ class ClientService {
                 phone: params.phone,
                 role: 'client',
                 password: this.alphanumeric()
-            }, {transaction})
+            }, {
+                returning: true,
+                transaction
+            })
 
             if (!user) {
                 throw {code: 404, message: 'error creating user'}
@@ -80,6 +84,14 @@ class ClientService {
                 subject: params.subject,
                 body: params.body
             }, {transaction})
+
+            await MailService.sendContactusMail({
+                email: params.email,
+                name: params.name,
+                phone: params.phone,
+                subject: params.subject,
+                body: params.body
+            }, next)
 
             await transaction.commit();
 

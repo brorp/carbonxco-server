@@ -1,18 +1,21 @@
-const {Mailer} = require('../config/nodemailer')
+const {Transport, contactUsTemplate} = require('../config/nodemailer')
 
 class MailService {
     static sendContactusMail = async (param, next) => {
         try {
-            await Mailer.send({
-                template: 'contactus',
-                message: {
-                    to: param.email
-                },
-                locals: {
-                    link: process.env.APP_URL,
-                    emai: param.name
+            Transport.sendMail(
+                contactUsTemplate(param),
+                (error) => {
+                  if (error) {
+                    throw {
+                        code: 400,
+                        name: "error sending mail",
+                    };
+                  } else {
+                    console.log(`email sent to ${param.email}`);
+                  }
                 }
-            })
+            );
         } catch (error) {
             next(error);
         }
