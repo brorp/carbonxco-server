@@ -34,7 +34,8 @@ const contactUsTemplate = (param) => {
     return {
       from: process.env.MAIL_FROM_ADDRESS,
       to: process.env.MAIL_TO_ADDRESS,
-      subject: `<div lang="en" role="article" aria-roledescription="email" aria-label="Reset Password">
+      subject: `[CARBONXCO-WEB] ${param.subject}`,
+      html: `<div lang="en" role="article" aria-roledescription="email" aria-label="Reset Password">
       <table
          style="font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI',            sans-serif; height: 100%; width: 100%;"
          role="presentation" cellspacing="0" cellpadding="0">
@@ -58,22 +59,24 @@ const contactUsTemplate = (param) => {
                                        <td class="sm-px-24" style="background-color: #ffffff; padding: 48px;">
                                           <p
                                              style="font-weight: 600; font-size: 18px; color: #374151; margin: 0; text-align: center; text-decoration: none;">
-                                             Hi <%= email %>,</p>
+                                             This email is coming from Contact Us form from carbonxco website.
                                           <p style="font-size: 16px; line-height: 2; color: #374151; text-align: center;">
-                                             Thank you for reaching us! Here is the confirmation code for your application:
+                                             Data Preview:
                                           </p>
                                           <br />
                                           <p
-                                             style="font-weight: 600; font-size: 24px; color: #374151; margin: 0; text-align: center;">
-                                             <%= token %>
+                                             style="font-size: 16px; color: #374151; margin: 0; text-align: justify;">
+                                             Email:  ${param.email}<br />
+                                             Name:  ${param.name}<br />
+                                             Phone:  ${param.phone}<br />
+                                             Subject:  ${param.subject}<br />
+                                             <br /> ${param.body}<br />
                                           </p>
                                           <br />
                                           <p style="font-size: 16px; line-height: 2; color: #374151; text-align: center;">
-                                             All you have to do is copy the number and paste on your apps to complete the
-                                             verification process</p>
+                                             You can preview all data on cms Carbonxco</p>
                                           <p style="color: #374151;">
-                                             <strong>Best Regards,</strong> <br />Jalan Jalur Sutera Kav 29D no.49-50, <br />Tangerang Selatan,
-                                             Banten 
+                                             <strong>Best Regards,</strong> <br />Carbonxco
                                           </p>
                                        </td>
                                     </tr>

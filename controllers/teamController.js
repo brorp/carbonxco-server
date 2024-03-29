@@ -33,8 +33,7 @@ class TeamController {
     static all = async(req,res,next) => {
         try {
             let { page, limit } = req.query
-            let { keyword } = req.query
-            let data = await TeamService.all({ keyword }, next);
+            let data = await TeamService.all(req.query, next);
             if (data) {
                 res.status(200).json(pagination(data, { page, limit }));
             }

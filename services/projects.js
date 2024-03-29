@@ -5,7 +5,8 @@ class ProjectService {
     static all = async (params, next) => {
         try {
             let where = {}
-            let order = ['id', 'DESC']
+            let limit = params.limit || 5;
+            let offset = (params.page - 1) * limit || 0;
             if (params.keyword) {
                 where = {
                     [Op.or]: {
@@ -14,28 +15,40 @@ class ProjectService {
                         },
                         name: {
                             [Op.iLike]: `%${params.keyword}%`
+                        },
+                        description: {
+                            [Op.iLike]: `%${params.keyword}%`
+                        },
+                        location: {
+                            [Op.iLike]: `%${params.keyword}%`
+                        },
+                        main_goal: {
+                            [Op.iLike]: `%${params.keyword}%`
+                        },
+                        sdg: {
+                            [Op.iLike]: `%${params.keyword}%`
+                        },
+                        community: {
+                            [Op.iLike]: `%${params.keyword}%`
+                        },
+                        key_factor: {
+                            [Op.iLike]: `%${params.keyword}%`
                         }
                     }
                 }
             }
 
-            if (params.sort && params.order) {
-                order[0] = params.sort
-                order[1] = params.order
-            }
-
             let projects = await Projects.findAndCountAll({
                 where,
-                order: [
-                    order,
-                ],
                 distinct: true,
                 include: [
                     {
                         model: Documents, 
                         as: 'documents', 
                     },
-                ], 
+                ],
+                limit,
+                offset
             });
 
             return projects;

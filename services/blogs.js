@@ -6,7 +6,8 @@ class BlogService {
     static all = async (params, next) => {
         try {
             let where = {}
-            let order = ['id', 'DESC']
+            let limit = params.limit || 5;
+            let offset = (params.page - 1) * limit || 0;
             if (params.keyword) {
                 where = {
                     [Op.or]: {
@@ -15,14 +16,15 @@ class BlogService {
                         },
                         content: {
                             [Op.iLike]: `%${params.keyword}%`
+                        },
+                        title: {
+                            [Op.iLike]: `%${params.keyword}%`
+                        },
+                        project_summary: {
+                            [Op.iLike]: `%${params.keyword}%`
                         }
                     }
                 }
-            }
-
-            if (params.sort && params.order) {
-                order[0] = params.sort
-                order[1] = params.order
             }
 
             let blogs = await Blogs.findAndCountAll({
@@ -34,9 +36,8 @@ class BlogService {
                     },
                 ],
                 distinct: true,
-                order: [
-                    order,
-                ],
+                limit,
+                offset
             });
 
             return blogs;

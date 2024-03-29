@@ -70,9 +70,9 @@ class JobService {
                 throw {code: 404, message: 'need params'}
             }
             
-            await Jobs.create(params, {returning: false})
+            let job = await Jobs.create(params, {returning: true})
 
-            return true
+            return job
         } catch (error){
             next(error)
         }
@@ -84,9 +84,9 @@ class JobService {
                 throw {code: 404, message: 'need params or id'}
             }
 
-            await Jobs.update(params, {where: {id}}, {returning: false})
+            let job = await Jobs.update(params, {where: {id}}, {returning: true})
 
-            return true
+            return job[1][0]
         } catch (error) {
             next(error)
         }

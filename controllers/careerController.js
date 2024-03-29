@@ -4,18 +4,27 @@ const CareerService = require('../services/careers')
 class CareerController {
     static post = async(req, res, next) => {
         try {
-            let { id } = req.params;
+            let { job_id } = req.params;
             let params = req.parameters;
             params = params.permit(
                 "email",
                 "name",
                 "phone",
-                "address"
+                "address",
+                { 'documents': [
+                        "id",
+                        "file_type",
+                        "file_name",
+                        "url",
+                        "document_type",
+                        "key"             
+                    ] 
+                }
             ).value()
             
-            let data = await CareerService.create(id, params, next);
+            let data = await CareerService.create(job_id, params, next);
             if(data) {
-                res.status(201).json({message: "Success Create"})
+                res.status(201).json(data)
             }
         } catch (error) {
             next(error)
@@ -25,8 +34,7 @@ class CareerController {
     static all = async(req,res,next) => {
         try {
             let { page, limit } = req.query
-            let { keyword, sort, order } = req.query
-            let data = await CareerService.all({ keyword, sort, order }, next);
+            let data = await CareerService.all(req.query, next);
             if (data) {
                 res.status(200).json(pagination(data, { page, limit }));
             }

@@ -15,7 +15,7 @@ class JobController {
 
             let data = await JobService.create(params, next);
             if(data) {
-                res.status(201).json({message: "Success Create"})
+                res.status(201).json(data)
             }
         } catch (error) {
             next(error)
@@ -61,7 +61,7 @@ class JobController {
 
             let data = await JobService.update(id, params, next);
             if(data) {
-                res.status(201).json({message: "Success Update"})
+                res.status(201).json(data)
             }
         } catch (error) {
             next(error)

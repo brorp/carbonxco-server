@@ -10,26 +10,30 @@ class ClientService {
     static all = async (params, next) => {
         try {
             let where = {}
-            let order = ['id','DESC']
+            let limit = params.limit || 5;
+            let offset = (params.page - 1) * limit || 0;
             if (params.keyword) {
                 where = {
                     name: {
                         [Op.iLike]: `%${params.keyword}%`
-                    }
+                    },
+                    email: {
+                        [Op.iLike]: `%${params.keyword}%`
+                    },
+                    subject: {
+                        [Op.iLike]: `%${params.keyword}%`
+                    },
+                    body: {
+                        [Op.iLike]: `%${params.keyword}%`
+                    },
                 }
-            }
-
-            if (params.sort && params.order) {
-                order[0] = params.sort
-                order[1] = params.order
             }
 
             let data = await Clients.findAndCountAll({
                 where,
                 include: {model: Users, attributes: ['name', 'email', 'phone']},
-                order: [
-                    order,
-                ],
+                limit,
+                offset
             });
 
             return data;
@@ -63,24 +67,27 @@ class ClientService {
             if(!params) {
                 throw {code: 404, message: 'need params'}
             }
-
-            let user = await Users.create({
-                email: params.email,
-                name: params.name,
-                phone: params.phone,
-                role: 'client',
-                password: this.alphanumeric()
-            }, {
-                returning: true,
+              
+            let [user, isCreated] = await Users.findOrCreate({
+                where: { email: params.email },
+                defaults: {
+                    email: params.email,
+                    name: params.name,
+                    phone: params.phone,
+                    role: 'client',
+                    password: this.alphanumeric()
+                },
                 transaction
             })
+
+            let userId = user.id ? user.id : isCreated.id;
 
             if (!user) {
                 throw {code: 404, message: 'error creating user'}
             }
 
             await Clients.create({
-                user_id: user.id,
+                user_id: userId,
                 subject: params.subject,
                 body: params.body
             }, {transaction})
