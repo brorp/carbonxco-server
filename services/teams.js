@@ -118,6 +118,8 @@ class TeamService {
 
             let docParams = {
                 documents: params.documents,
+                reference_id: project.id,
+                reference_type: "teams"
             }
 
             let document = await DocumentService.upsert(docParams, transaction, next);
