@@ -143,7 +143,7 @@ class ProjectService {
                 throw {code: 400, message: 'no documents found'}
             }
 
-            project = await Projects.findOne({
+            let res = await Projects.findOne({
                 where: {id: project[1][0].id},
                 include: [
                     {
@@ -154,7 +154,7 @@ class ProjectService {
             })
 
             await transaction.commit();
-            return project
+            return res
         } catch (error) {
             next(error)
         }
