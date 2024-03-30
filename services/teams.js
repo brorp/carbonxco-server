@@ -118,7 +118,7 @@ class TeamService {
 
             let docParams = {
                 documents: params.documents,
-                reference_id: project.id,
+                reference_id: team[1][0].id,
                 reference_type: "teams"
             }
 

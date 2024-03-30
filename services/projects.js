@@ -136,7 +136,7 @@ class ProjectService {
    
             let docParams = {
                 documents: params.documents,
-                reference_id: project.id,
+                reference_id: project[1][0].id,
                 reference_type: "projects"
             }
 
