@@ -54,7 +54,7 @@ class CareerService {
         }
     }
 
-    static create = async (id, params, next) => {
+    static create = async (job_id, params, next) => {
         const transaction = await sequelize.transaction();
         try {
             if(!params) {
@@ -65,9 +65,9 @@ class CareerService {
 
             let user = await Users.create({
                 email: params.email,
-                name: params.name,
+                name: params.name ? params.name : "default",
                 password: hash_password(currentTimeString),
-                phone: params.phone,
+                phone: params.phone ? params.phone : "default",
                 address: params.address,
                 role: 'applicant'
             }, {
@@ -76,7 +76,7 @@ class CareerService {
             });
 
             let career = await Careers.create({
-                job_id: id,
+                job_id: job_id,
                 user_id: user.id,
             }, {
                 returning: true,
@@ -101,8 +101,8 @@ class CareerService {
                         model: Documents, 
                         as: 'documents', 
                     },
-                    {model: Jobs, attributes: {exclude: "job_id"}},
-                    {model: Users, attributes: {exclude: 'password'}},
+                    {model: Jobs, attributes: {exclude: "job_id"}, as: "job"},
+                    {model: Users, attributes: {exclude: 'password'}, as: "user"},
                 ],
                 transaction
             })

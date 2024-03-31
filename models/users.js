@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(models.Careers, {
         foreignKey: "user_id",
         constraints: false,
+        as: "user"
       });
     }
   }
