@@ -7,6 +7,8 @@ const BlogController = require('../controllers/blogController');
 const JobController = require('../controllers/jobController');
 const ProjectController = require('../controllers/projectController');
 const CareerController = require("@controllers/careerController");
+const DocumentController = require("@controllers/documentController");
+const { parseFile } = require("@helpers/multer");
 
 web_router.get("/jobs", JobController.all);
 web_router.get("/jobs/:id", JobController.detail);
@@ -28,5 +30,8 @@ web_router.post("/contact-us", ClientController.post);
 
 web_router.get("/faqs", FaqController.all);
 web_router.get("/faqs/:id", FaqController.detail);
+
+web_router.post("/documents", parseFile, DocumentController.post);
+web_router.delete("/documents/:id", DocumentController.delete);
 
 module.exports = web_router
