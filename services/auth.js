@@ -11,7 +11,8 @@ class AuthService {
                 },
                 attributes: {exclude: 'user_id'}
             });
-            if (response.password !== hash_password(params.password)) {
+
+            if (!response || response.password !== hash_password(params.password)) {
                 throw { message: 'Email or Password is incorrect', code: 401 }
             }
 
