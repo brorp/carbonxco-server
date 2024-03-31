@@ -70,7 +70,8 @@ class DocumentService {
                 key: uploadedFile.Key,
                 file_type: params.file_type,
                 file_name: params.file_name
-            }
+            };
+            
         } catch (error) {
             next(error)
         }

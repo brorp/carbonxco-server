@@ -86,11 +86,15 @@ class ClientService {
                 throw {code: 404, message: 'error creating user'}
             }
 
-            await Clients.create({
+            let client = await Clients.create({
                 user_id: userId,
                 subject: params.subject,
                 body: params.body
             }, {transaction})
+
+            if (!client) {
+                throw {code: 404, message: 'error creating client'}
+            }
 
             await MailService.sendContactusMail({
                 email: params.email,
@@ -104,6 +108,7 @@ class ClientService {
 
             return true
         } catch (error) {
+            await transaction.rollback();
             next(error)
         }
     }

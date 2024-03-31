@@ -118,6 +118,7 @@ class ProjectService {
             await transaction.commit();
             return res     
         } catch (error){
+            await transaction.rollback();
             next(error)
         }
     }
@@ -158,6 +159,7 @@ class ProjectService {
             await transaction.commit();
             return res
         } catch (error) {
+            await transaction.rollback();
             next(error)
         }
     }

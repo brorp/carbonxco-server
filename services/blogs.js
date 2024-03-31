@@ -110,6 +110,7 @@ class BlogService {
             await transaction.commit();
             return res
         } catch (error){
+            await transaction.rollback();
             next(error)
         }
     }
@@ -150,6 +151,7 @@ class BlogService {
             await transaction.commit();
             return res
         } catch (error) {
+            await transaction.rollback();
             next(error)
         }
     }

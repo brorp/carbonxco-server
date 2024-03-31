@@ -75,6 +75,10 @@ class CareerService {
                 transaction
             });
 
+            if(!user) {
+                throw {code: 400, message: 'fail creating user'}
+            }
+
             let career = await Careers.create({
                 job_id: job_id,
                 user_id: user.id,
@@ -82,6 +86,10 @@ class CareerService {
                 returning: true,
                 transaction
             });
+
+            if(!career) {
+                throw {code: 400, message: 'fail creating career'}
+            }
 
             let docParams = {
                 documents: params.documents,
@@ -107,9 +115,14 @@ class CareerService {
                 transaction
             })
 
+            if(!res) {
+                throw {code: 400, message: 'response error'}
+            }
+
             await transaction.commit();
             return res
         } catch (error){
+            await transaction.rollback();
             next(error)
         }
     }

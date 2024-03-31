@@ -100,6 +100,7 @@ class TeamService {
             await transaction.commit();
             return res            
         } catch (error){
+            await transaction.rollback();
             next(error)
         }
     }
@@ -140,6 +141,7 @@ class TeamService {
             await transaction.commit();
             return team
         } catch (error) {
+            await transaction.rollback();
             next(error)
         }
     }
