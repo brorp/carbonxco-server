@@ -48,7 +48,8 @@ class ProjectService {
                     },
                 ],
                 limit,
-                offset
+                offset,
+                order: [['createdAt', 'DESC']],
             });
 
             return projects;

@@ -45,7 +45,8 @@ class CareerService {
                 ],
                 attributes: ['id', 'createdAt', 'updatedAt'],
                 limit,
-                offset
+                offset,
+                order: [['createdAt', 'DESC']],
             });
 
             return careers;

@@ -23,7 +23,8 @@ class FaqService {
             let faqs = await Faqs.findAndCountAll({
                 where,
                 limit,
-                offset
+                offset,
+                order: [['createdAt', 'DESC']],
             });
 
             return faqs;

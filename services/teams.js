@@ -30,7 +30,8 @@ class TeamService {
                 ], 
                 distinct: true,
                 limit,
-                offset
+                offset,
+                order: [['createdAt', 'DESC']],
             });
 
             return teams;

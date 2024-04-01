@@ -32,7 +32,8 @@ class JobService {
                 order: [
                     order,
                 ],
-                attributes: {exclude: ["job_id", "user_id"]}
+                attributes: {exclude: ["job_id", "user_id"]},
+                order: [['createdAt', 'DESC']],
             });
 
             return jobs;
