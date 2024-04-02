@@ -27,6 +27,12 @@ class BlogService {
                 }
             }
 
+            if (params.category) {
+                where = {
+                    category: params.category
+                }
+            }
+
             let blogs = await Blogs.findAndCountAll({
                 where,
                 include: [
