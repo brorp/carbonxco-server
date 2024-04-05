@@ -110,7 +110,6 @@ class BlogService {
                         as: 'documents', 
                     },
                 ],
-                order: [['createdAt', 'DESC']],
                 transaction
             })
 

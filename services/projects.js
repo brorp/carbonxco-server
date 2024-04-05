@@ -49,7 +49,7 @@ class ProjectService {
                 ],
                 limit,
                 offset,
-                order: [['createdAt', 'DESC']],
+                order: [['createdAt', 'ASC']],
             });
 
             return projects;

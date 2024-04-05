@@ -24,7 +24,7 @@ class FaqService {
                 where,
                 limit,
                 offset,
-                order: [['createdAt', 'DESC']],
+                order: [['createdAt', 'ASC']],
             });
 
             return faqs;

@@ -5,7 +5,6 @@ class JobService {
     static all = async (params, next) => {
         try {
             let where = {}
-            let order = ['id', 'DESC']
             if (params.keyword) {
                 where = {
                     [Op.or]: {
@@ -29,11 +28,8 @@ class JobService {
 
             let jobs = await Jobs.findAndCountAll({
                 where,
-                order: [
-                    order,
-                ],
                 attributes: {exclude: ["job_id", "user_id"]},
-                order: [['createdAt', 'DESC']],
+                order: [['createdAt', 'ASC']],
             });
 
             return jobs;

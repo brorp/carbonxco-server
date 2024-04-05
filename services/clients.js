@@ -34,7 +34,7 @@ class ClientService {
                 include: {model: Users, attributes: ['name', 'email', 'phone']},
                 limit,
                 offset,
-                order: [['createdAt', 'DESC']],
+                order: [['createdAt', 'ASC']],
             });
 
             return data;
