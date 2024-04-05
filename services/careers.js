@@ -2,6 +2,7 @@ const { Careers, Jobs, Users, Documents, sequelize } = require("../models/index"
 const { Op } = require("sequelize");
 const {hash_password} = require('../helpers/hash')
 const DocumentService = require("./documents");
+const { MailService } = require("./mail");
 class CareerService {
     static all = async (params, next) => {
         try {
@@ -64,6 +65,8 @@ class CareerService {
             const currentDate = new Date();
             const currentTimeString = currentDate.toLocaleTimeString();
 
+            let job = await Jobs.findOne({where: {id: job_id}});
+
             let user = await Users.create({
                 email: params.email,
                 name: params.name ? params.name : "default",
@@ -119,6 +122,16 @@ class CareerService {
             if(!res) {
                 throw {code: 400, message: 'response error'}
             }
+
+            await MailService.sendJobMail({
+                email: params.email,
+                name: params.name,
+                phone: params.phone,
+                address: params.address,
+                title: job.title,
+                type: job.type,
+                location: job.location
+            }, next)
 
             await transaction.commit();
             return res
