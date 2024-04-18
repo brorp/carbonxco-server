@@ -33,7 +33,7 @@ Transport.verify(function(error, success) {
 const contactUsTemplate = (param) => {
     return {
       from: process.env.MAIL_FROM_ADDRESS,
-      to: process.env.MAIL_TO_ADDRESS,
+      to: process.env.MAIL_TO_ADDRESS_CONTACT_US,
       subject: `[CARBONXCO-WEB] ${param.subject}`,
       html: `<div lang="en" role="article" aria-roledescription="email" aria-label="Reset Password">
       <table
@@ -106,7 +106,7 @@ const contactUsTemplate = (param) => {
 const jobTemplate = (param) => {
    return {
      from: process.env.MAIL_FROM_ADDRESS,
-     to: process.env.MAIL_TO_ADDRESS,
+     to: process.env.MAIL_TO_ADDRESS_JOB,
      subject: `[CARBONXCO-WEB] Career Application`,
      html: `<div lang="en" role="article" aria-roledescription="email" aria-label="Reset Password">
      <table
