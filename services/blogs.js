@@ -202,6 +202,12 @@ class BlogService {
                         }
                     ]
                 },
+                include: [
+                    {
+                        model: Documents, 
+                        as: 'documents', 
+                    },
+                ], 
                 order: [['createdAt', 'ASC']],
                 limit: 1
             })
@@ -218,6 +224,12 @@ class BlogService {
                             }
                         ]
                     },
+                    include: [
+                        {
+                            model: Documents, 
+                            as: 'documents', 
+                        },
+                    ], 
                     order: [['createdAt', 'ASC']],
                     limit: 1
                 })
