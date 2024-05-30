@@ -49,7 +49,7 @@ class ProjectService {
                 ],
                 limit,
                 offset,
-                order: [['createdAt', 'ASC']],
+                order: [['createdAt', 'DESC']],
             });
 
             return projects;
@@ -201,7 +201,7 @@ class ProjectService {
                             id: {[Op.not]: id}
                         },
                         {
-                            createdAt: {[Op.gt]: existingProject.createdAt}
+                            createdAt: {[Op.lt]: existingProject.createdAt}
                         }
                     ]
                 },
@@ -211,7 +211,7 @@ class ProjectService {
                         as: 'documents', 
                     },
                 ], 
-                order: [['createdAt', 'ASC']],
+                order: [['createdAt', 'DESC']],
                 limit: 1
             })
 

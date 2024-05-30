@@ -42,6 +42,7 @@ class BlogService {
                     },
                 ],
                 distinct: true,
+                order: [['createdAt', 'DESC']],
                 limit,
                 offset
             });
@@ -198,7 +199,7 @@ class BlogService {
                             id: {[Op.not]: id}
                         },
                         {
-                            createdAt: {[Op.gt]: existingBlog.createdAt}
+                            createdAt: {[Op.lt]: existingBlog.createdAt}
                         }
                     ]
                 },
@@ -208,7 +209,7 @@ class BlogService {
                         as: 'documents', 
                     },
                 ], 
-                order: [['createdAt', 'ASC']],
+                order: [['createdAt', 'DESC']],
                 limit: 1
             })
 
